@@ -23,6 +23,7 @@ Page d'accueil :
 
             Page ajout séance :
 
+                nom module (non modifiable)
                 date début
                 date fin
                 liste salle
