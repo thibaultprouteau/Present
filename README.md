@@ -35,17 +35,17 @@ Page d'accueil :
                  bouton pour mettre tout le monde présent
                  bouton valider appel
                   
-         Page ajouter cours :
+        Page ajouter cours :
               
-              liste module
-              liste référent
-              liste groupe
-              date début
-              date fin
-              liste salle
+             liste module
+             liste référent
+             liste groupe
+             date début
+             date fin
+             liste salle
               
          
-      Page Gérer groupes : 
+     Page Gérer groupes : 
       
            
       
