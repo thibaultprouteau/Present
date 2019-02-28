@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/button_gerer_cours"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="126dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="onClick_gerer_cours"
+        android:text="@string/gerer_cours"
+        app:layout_constraintBottom_toTopOf="@+id/button_gerer_groupes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_gerer_groupes"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="126dp"
+        android:layout_marginBottom="15dp"
+        android:onClick="onClick_gerer_groupes"
+        android:text="@string/gerer_groupes"
+        app:layout_constraintBottom_toTopOf="@+id/button_statistiques"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_gerer_cours" />
+
+    <Button
+        android:id="@+id/button_statistiques"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="126dp"
+        android:layout_marginBottom="276dp"
+        android:onClick="onClick_statistiques"
+        android:text="@string/statistiques"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_gerer_groupes" />
+
+</android.support.constraint.ConstraintLayout>

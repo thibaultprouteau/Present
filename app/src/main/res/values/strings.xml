@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Presence</string>
-    <string name="add" />
-    <string name="g_rer_cours">gérer cours</string>
-    <string name="g_rer_groupes">gérer groupes</string>
-    <string name="statistiques">statistiques</string>
-    <string name="title_activity_etudiants__groupes">Etudiants_Groupes</string>
-    <string name="save">save</string>
-</resources>
