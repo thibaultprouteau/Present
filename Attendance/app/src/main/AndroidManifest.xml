@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ajout_etudiant"></activity>
+        <activity android:name=".prise_presence"></activity>
+        <activity android:name=".ajout_etudiant" />
         <activity android:name=".ajout_cours" />
         <activity android:name=".statistiques" />
         <activity android:name=".gerer_groupes" />
