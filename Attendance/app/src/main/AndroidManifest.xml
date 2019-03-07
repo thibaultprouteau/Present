@@ -9,13 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".prise_presence"></activity>
-        <activity android:name=".ajout_etudiant" />
-        <activity android:name=".ajout_cours" />
-        <activity android:name=".statistiques" />
-        <activity android:name=".gerer_groupes" />
-        <activity android:name=".gerer_cours" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".prise_presence"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ajout_etudiant"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ajout_cours"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".statistiques"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gerer_groupes"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gerer_cours"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

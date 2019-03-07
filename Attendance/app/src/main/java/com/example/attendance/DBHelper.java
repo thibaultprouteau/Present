@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String COURSE_COLUMN_ID = "idCourse";
     public static final String COURSE_COLUMN_NAME = "courseName";
-    public static final String COURSE_COLUMN_DESCRIPTION = "desctiption";
+    public static final String COURSE_COLUMN_DESCRIPTION = "description";
 
 
     /*************** Table Lecture **********************/
@@ -69,30 +69,32 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COMMA = ",";
     public static final String NOTNULL = "NOT NULL";
     private static final String CREATION = "";
+    private static final String DATABASEDEBUG = "databasedebug";
 
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE Course (idCourse  integer PRIMARY KEY, courseName text NOT NULL, description text NOT NULL);");
+        db.execSQL("CREATE TABLE Course (idCourse  integer PRIMARY KEY, courseName text NOT NULL UNIQUE, description text NOT NULL);");
         Log.i(CREATION, "onCreate: TABLE COURSE CREATED");
         db.execSQL("CREATE TABLE Lecture (idLecture integer PRIMARY KEY, startTime text NOT NULL, endTime text NOT NULL, lecturer text NOT NULL, location text, idCourse integer NOT NULL, idGroup text NOT NULL, FOREIGN KEY(idGroup) REFERENCES Groups(idGroup), FOREIGN KEY(idCourse) REFERENCES Course(idCourse) );");
         Log.i(CREATION, "onCreate: TABLE LECTURE CREATED ");
         db.execSQL("CREATE TABLE Groups (\n" +
-                "  idGroup   text PRIMARY KEY, \n" +
-                "  groupName text NOT NULL);\n");
+                "  idGroup   integer PRIMARY KEY, \n" +
+                "  groupName text NOT NULL UNIQUE);\n");
         db.execSQL("CREATE TABLE Person (\n" +
-                "  idPerson  text PRIMARY KEY, \n" +
+                "  idPerson  integer PRIMARY KEY, \n" +
                 "  firstName text NOT NULL, \n" +
                 "  lastName  text NOT NULL, \n" +
                 "  idGroup   integer NOT NULL, \n" +
                 "  FOREIGN KEY(idGroup) REFERENCES Groups(idGroup));\n");
         db.execSQL("CREATE TABLE Attendance (\n" +
-                "  idLecture text NOT NULL, \n" +
+                "  idLecture integer NOT NULL, \n" +
                 "  idPerson  integer NOT NULL, \n" +
                 "  status    integer NOT NULL, \n" +
                 "  FOREIGN KEY (idLecture) REFERENCES Lecture(idLecture), \n" +
@@ -134,6 +136,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean insertGroups(String groupName, Integer idGroup) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GROUPS_COLUMN_NAME, groupName);
+        contentValues.put(GROUPS_COLUMN_ID, idGroup);
+        db.insert(GROUPS_TABLE_NAME, null, contentValues);
+        return true;
+    }
     public boolean insertGroups(String groupName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -142,7 +152,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertPerson(String firstName, String lastName, String idGroup) {
+    public boolean insertPerson(String firstName, String lastName, Integer idGroup) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PERSON_COLUMN_FIRST_NAME, firstName);
@@ -159,6 +169,12 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(ATTENDANCE_COLUMN_PERSONID, idPerson);
         contentValues.put(ATTENDANCE_COLUMN_STATUS, status);
         db.insert(ATTENDANCE_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public boolean truncateTable(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DELETE FROM TABLE " + tableName + "; VACUUM;");
         return true;
     }
 
@@ -222,13 +238,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Groups> getGroups() {
         ArrayList<Groups> arrayList = new ArrayList<Groups>();
-        //SQLiteDatabase db = this.getReadableDatabase();
-        Cursor groups = getAll(LECTURE_TABLE_NAME);
-        groups.moveToFirst();
-        while (!groups.isAfterLast()) {
-            arrayList.add(new Groups(
-                    groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)),
-                    groups.getString(groups.getColumnIndex(GROUPS_COLUMN_NAME))));
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor groups = getAll(GROUPS_TABLE_NAME);
+        if (groups.moveToFirst()) {
+            do {
+                arrayList.add(new Groups(
+                        groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)),
+                        groups.getString(groups.getColumnIndex(GROUPS_COLUMN_NAME))));
+            } while (groups.moveToNext());
         }
         return arrayList;
     }
@@ -278,8 +295,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
         return arrayList;
+
     }
 
+
+   /*public void sampleData(){
+        insertGroups("L1");
+        insertGroups("L2");
+        insertGroups("L3");
+        insertGroups("M1");
+        insertGroups("M2");
+        insertGroups("TEACHER");
+
+        //insertPerson("Thibault","PROUTEAU","")
+    }*/
 
 
 
