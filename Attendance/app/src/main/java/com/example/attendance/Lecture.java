@@ -1,16 +1,39 @@
 package com.example.attendance;
 
 public class Lecture {
+    private Integer idLecture;
     private String startTime;
     private String endTime;
     private String lecturer;
     private String location;
+    private Integer idGroup;
+    private Integer idCours;
 
-    public Lecture(String startTime, String endTime, String lecturer, String location) {
+
+    public Lecture(Integer idLecture, String startTime, String endTime, String lecturer, String location, Integer idGroup, Integer idCours) {
+        this.idLecture = idLecture;
         this.startTime = startTime;
         this.endTime = endTime;
         this.lecturer = lecturer;
         this.location = location;
+        this.idGroup = idGroup;
+        this.idCours = idCours;
+    }
+
+    public Integer getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(Integer idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    public Integer getIdCours() {
+        return idCours;
+    }
+
+    public void setIdCours(Integer idCours) {
+        this.idCours = idCours;
     }
 
     public String getStartTime() {

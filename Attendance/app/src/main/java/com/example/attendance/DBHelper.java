@@ -239,13 +239,17 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Lecture> arrayList = new ArrayList<Lecture>();
         //SQLiteDatabase db = this.getReadableDatabase();
         Cursor lectures = getLecturesCursor(idCourse);
-        lectures.moveToFirst();
-        while (!lectures.isAfterLast()) {
-            arrayList.add(new Lecture(lectures.getString(
-                    lectures.getColumnIndex(LECTURE_COLUMN_START_TIME)),
-                    lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_END_TIME)),
-                    lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LECTURER)),
-                    lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LOCATION))));
+        if (lectures.moveToFirst()) {
+            do {
+                arrayList.add(new Lecture(
+                        lectures.getInt(lectures.getColumnIndex(LECTURE_COLUMN_ID)),
+                        lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_START_TIME)),
+                        lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_END_TIME)),
+                        lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LECTURER)),
+                        lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LOCATION)),
+                        lectures.getInt(lectures.getColumnIndex(LECTURE_COLUMN_GROUPID)),
+                        lectures.getInt(lectures.getColumnIndex(LECTURE_COLUMN_COURSEID))));
+            } while (lectures.moveToNext());
         }
         return arrayList;
     }
@@ -284,14 +288,14 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Person> arrayList = new ArrayList<Person>();
         //SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getGroupMembers(idGroup);
-        people.moveToFirst();
-        while (!people.isAfterLast()) {
-            arrayList.add(new Person(
-                    people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
-                    people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
-                    people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
-                    people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
-
+        if (people.moveToFirst()) {
+            do {
+                arrayList.add(new Person(
+                        people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
+                        people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
+                        people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
+                        people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
+            } while (people.moveToNext());
         }
         return arrayList;
     }
@@ -300,13 +304,13 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<AttendanceRecord> arrayList = new ArrayList<AttendanceRecord>();
         //SQLiteDatabase db = this.getReadableDatabase();
         Cursor aR = getAttendanceRecordsCursor(idLecture);
-        aR.moveToFirst();
-        while (!aR.isAfterLast()) {
-            arrayList.add(new AttendanceRecord(
-                    aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_LECTUREID)),
-                    aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_PERSONID)),
-                    aR.getString(aR.getColumnIndex(ATTENDANCE_COLUMN_STATUS))));
-
+        if (aR.moveToFirst()) {
+            do {
+                arrayList.add(new AttendanceRecord(
+                        aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_PERSONID)),
+                        aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_PERSONID)),
+                        aR.getString(aR.getColumnIndex(ATTENDANCE_COLUMN_STATUS))));
+            } while (aR.moveToNext());
         }
         return arrayList;
 
