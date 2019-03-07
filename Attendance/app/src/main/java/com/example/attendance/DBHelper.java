@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -161,11 +162,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getGroups() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + GROUPS_TABLE_NAME, null);
-        return res;
-    }
 
     public Cursor getCourseName() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -191,10 +187,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return res;
     }
 
-
-    public ArrayList<String> getAllCourses() {
-        ArrayList<String> array_list = new ArrayList<String>();
+    public Cursor getAttendanceRecordsCursor(Integer idLecture) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from " + PERSON_TABLE_NAME + " where " + PERSON_COLUMN_GROUPID + " =?", new String[]{idLecture.toString()});
+        return res;
+    }
+
+
+    public ArrayList<String> getAllCoursesNames() {
+        ArrayList<String> array_list = new ArrayList<String>();
+        //SQLiteDatabase db = this.getReadableDatabase();
         Cursor courses = getCourseName();
         courses.moveToFirst();
         while (courses.isAfterLast() == false) {
@@ -204,19 +206,83 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Lecture> getLectures(Integer idCourse) {
-        ArrayList<Lecture> array_list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Lecture> arrayList = new ArrayList<Lecture>();
+        //SQLiteDatabase db = this.getReadableDatabase();
         Cursor lectures = getLecturesCursor(idCourse);
         lectures.moveToFirst();
-        while (lectures.isAfterLast() == false) {
-            array_list.add(new Lecture(lectures.getString(
+        while (!lectures.isAfterLast()) {
+            arrayList.add(new Lecture(lectures.getString(
                     lectures.getColumnIndex(LECTURE_COLUMN_START_TIME)),
                     lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_END_TIME)),
                     lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LECTURER)),
                     lectures.getString(lectures.getColumnIndex(LECTURE_COLUMN_LOCATION))));
         }
-        return array_list;
+        return arrayList;
     }
+
+    public ArrayList<Groups> getGroups() {
+        ArrayList<Groups> arrayList = new ArrayList<Groups>();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        Cursor groups = getAll(LECTURE_TABLE_NAME);
+        groups.moveToFirst();
+        while (!groups.isAfterLast()) {
+            arrayList.add(new Groups(
+                    groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)),
+                    groups.getString(groups.getColumnIndex(GROUPS_COLUMN_NAME))));
+        }
+        return arrayList;
+    }
+
+    public ArrayList<Person> getPeople() {
+        ArrayList<Person> arrayList = new ArrayList<Person>();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        Cursor people = getAll(PERSON_TABLE_NAME);
+        people.moveToFirst();
+        while (!people.isAfterLast()) {
+            arrayList.add(new Person(
+                    people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
+                    people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
+                    people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
+                    people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
+
+        }
+        return arrayList;
+    }
+
+    public ArrayList<Person> getPeople(Integer idGroup) {
+        ArrayList<Person> arrayList = new ArrayList<Person>();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        Cursor people = getGroupMembers(idGroup);
+        people.moveToFirst();
+        while (!people.isAfterLast()) {
+            arrayList.add(new Person(
+                    people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
+                    people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
+                    people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
+                    people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
+
+        }
+        return arrayList;
+    }
+
+    public ArrayList<AttendanceRecord> getAttendanceRecords(Integer idLecture) {
+        ArrayList<AttendanceRecord> arrayList = new ArrayList<AttendanceRecord>();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        Cursor aR = getAttendanceRecordsCursor(idLecture);
+        aR.moveToFirst();
+        while (!aR.isAfterLast()) {
+            arrayList.add(new AttendanceRecord(
+                    aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_LECTUREID)),
+                    aR.getInt(aR.getColumnIndex(ATTENDANCE_COLUMN_PERSONID)),
+                    aR.getString(aR.getColumnIndex(ATTENDANCE_COLUMN_STATUS))));
+
+        }
+        return arrayList;
+    }
+
+
+
+
 
 
 }

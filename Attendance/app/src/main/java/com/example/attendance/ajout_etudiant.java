@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class ajout_etudiant extends AppCompatActivity {
 
@@ -17,6 +19,12 @@ public class ajout_etudiant extends AppCompatActivity {
         setContentView(R.layout.activity_ajout_etudiant);
         Toolbar toolbar_ajout_etudiant = findViewById(R.id.tool_bar_ajout_etudiant);
         setSupportActionBar(toolbar_ajout_etudiant);
+
+        /************* Layout Elements ***********/
+
+        TextView firstName = findViewById(R.id.text_view_prenom_etudiant);
+        TextView lastName = findViewById(R.id.textView_nom_etudiant);
+        Spinner Group = findViewById(R.id.spinner_groupe_etudiant);
     }
 
     @Override
@@ -28,7 +36,7 @@ public class ajout_etudiant extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //fonction de sauvegarde en bdd
+
         return super.onOptionsItemSelected(item);
     }
 }
