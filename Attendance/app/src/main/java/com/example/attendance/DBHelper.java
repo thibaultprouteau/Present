@@ -225,8 +225,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<String> getAllCoursesNames() {
-        ArrayList<String> array_list = new ArrayList<String>();
-        //SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor courses = getCourseName();
         courses.moveToFirst();
         while (courses.isAfterLast() == false) {
@@ -236,8 +236,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Lecture> getLectures(Integer idCourse) {
-        ArrayList<Lecture> arrayList = new ArrayList<Lecture>();
-        //SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Lecture> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor lectures = getLecturesCursor(idCourse);
         if (lectures.moveToFirst()) {
             do {
@@ -255,7 +255,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Groups> getGroups() {
-        ArrayList<Groups> arrayList = new ArrayList<Groups>();
+        ArrayList<Groups> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor groups = getAll(GROUPS_TABLE_NAME);
         if (groups.moveToFirst()) {
@@ -269,7 +269,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Person> getPeople() {
-        ArrayList<Person> arrayList = new ArrayList<Person>();
+        ArrayList<Person> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getAll(PERSON_TABLE_NAME);
         if (people.moveToFirst()) {
@@ -285,8 +285,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Person> getPeople(Integer idGroup) {
-        ArrayList<Person> arrayList = new ArrayList<Person>();
-        //SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Person> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getGroupMembers(idGroup);
         if (people.moveToFirst()) {
             do {
@@ -301,8 +301,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<AttendanceRecord> getAttendanceRecords(Integer idLecture) {
-        ArrayList<AttendanceRecord> arrayList = new ArrayList<AttendanceRecord>();
-        //SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<AttendanceRecord> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor aR = getAttendanceRecordsCursor(idLecture);
         if (aR.moveToFirst()) {
             do {

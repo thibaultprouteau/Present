@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onClick_gerer_cours(View view) {
-        //Intent gerer_cours = new Intent(getApplicationContext(), gerer_cours.class);
-        //startActivity(gerer_cours);
-        db = new DBHelper(getApplicationContext());
+        Intent gerer_cours = new Intent(getApplicationContext(), gerer_cours.class);
+        startActivity(gerer_cours);
+        /*********db = new DBHelper(getApplicationContext());
         //db.truncateTable(db.GROUPS_TABLE_NAME);
         //db.onCreate(new SQLiteDatabase() db);
         db.cleanDB();
@@ -42,16 +42,16 @@ public class MainActivity extends AppCompatActivity {
         db.insertPerson("Thibault", "Prouteau", 4);
 
 
-        /*for(Groups g : db.getGroups()){
+         for(Groups g : db.getGroups()){
             Log.d(DATABASEDEBUG, g.getGroupName());
-        }*/
+         }
         Log.d(DATABASEDEBUG, "Nb of Rows: " + (((Integer) db.getAll(db.GROUPS_TABLE_NAME).getCount()).toString()));
         //Cursor c = db.getAll(db.GROUPS_TABLE_NAME);
         //c.moveToFirst();
         //Log.d(DATABASEDEBUG, "onClick_gerer_cours: "+(c.getString(c.getColumnIndex(db.GROUPS_COLUMN_NAME)))+" ID:"+((Integer)c.getInt(c.getColumnIndex(db.GROUPS_COLUMN_ID))).toString());
          /*while ((c.moveToNext())){
              Log.d(DATABASEDEBUG, "onClick_gerer_cours: "+(c.getString(c.getColumnIndex(db.GROUPS_COLUMN_NAME)))+" ID:"+((Integer)c.getInt(c.getColumnIndex(db.GROUPS_COLUMN_ID))).toString());
-         }*/
+         }
         Log.d(DATABASEDEBUG, "onClick_gerer_cours: " + (db.getGroups().isEmpty()));
         for (Groups g : (db.getGroups())) {
             Log.d(DATABASEDEBUG, "Id : " + g.getIdGroup() + " name : " + g.getGroupName());
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (Person p : (db.getPeople())) {
             Log.d(DATABASEDEBUG, "id : " + p.getIdPerson() + " firstName : " + p.getFirstName() + " lastName : " + p.getLastName() + " idGroup : " + p.getIdGroup());
-        }
+         }******************/
 
     }
 
