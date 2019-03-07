@@ -30,11 +30,16 @@ public class MainActivity extends AppCompatActivity {
         db = new DBHelper(getApplicationContext());
         //db.truncateTable(db.GROUPS_TABLE_NAME);
         //db.onCreate(new SQLiteDatabase() db);
+        db.cleanDB();
         db.insertGroups("L2");
         db.insertGroups("L3");
         db.insertGroups("M1");
         db.insertGroups("M2");
         db.insertGroups("TEACHER");
+        db.insertPerson("Nathalie", "Camelin", 5);
+        db.insertPerson("Nicolas", "Dugué", 4);
+        db.insertPerson("Valentin", "Pelloin", 4);
+        db.insertPerson("Thibault", "Prouteau", 4);
 
 
         /*for(Groups g : db.getGroups()){
@@ -50,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(DATABASEDEBUG, "onClick_gerer_cours: " + (db.getGroups().isEmpty()));
         for (Groups g : (db.getGroups())) {
             Log.d(DATABASEDEBUG, "Id : " + g.getIdGroup() + " name : " + g.getGroupName());
+        }
+
+        for (Person p : (db.getPeople())) {
+            Log.d(DATABASEDEBUG, "id : " + p.getIdPerson() + " firstName : " + p.getFirstName() + " lastName : " + p.getLastName() + " idGroup : " + p.getIdGroup());
         }
 
     }

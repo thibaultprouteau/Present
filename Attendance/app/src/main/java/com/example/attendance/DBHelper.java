@@ -114,6 +114,20 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
+
+    public void cleanDB() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + GROUPS_TABLE_NAME);
+        db.execSQL("DELETE FROM " + COURSE_TABLE_NAME);
+        db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME);
+        db.execSQL("DELETE FROM " + PERSON_TABLE_NAME);
+    }
+
     public boolean insertCourse(String courseName, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -252,16 +266,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Person> getPeople() {
         ArrayList<Person> arrayList = new ArrayList<Person>();
-        //SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getAll(PERSON_TABLE_NAME);
-        people.moveToFirst();
-        while (!people.isAfterLast()) {
-            arrayList.add(new Person(
-                    people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
-                    people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
-                    people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
-                    people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
-
+        if (people.moveToFirst()) {
+            do {
+                arrayList.add(new Person(
+                        people.getInt(people.getColumnIndex(PERSON_COLUMN_ID)),
+                        people.getString(people.getColumnIndex(PERSON_COLUMN_FIRST_NAME)),
+                        people.getString(people.getColumnIndex(PERSON_COLUMN_LAST_NAME)),
+                        people.getInt(people.getColumnIndex(PERSON_COLUMN_GROUPID))));
+            } while (people.moveToNext());
         }
         return arrayList;
     }
@@ -298,17 +312,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-
-   /*public void sampleData(){
-        insertGroups("L1");
-        insertGroups("L2");
-        insertGroups("L3");
-        insertGroups("M1");
-        insertGroups("M2");
-        insertGroups("TEACHER");
-
-        //insertPerson("Thibault","PROUTEAU","")
-    }*/
 
 
 

@@ -10,4 +10,28 @@ public class AttendanceRecord {
         this.idPerson = idPerson;
         this.status = status;
     }
+
+    public Integer getIdLecture() {
+        return idLecture;
+    }
+
+    public void setIdLecture(Integer idLecture) {
+        this.idLecture = idLecture;
+    }
+
+    public Integer getIdPerson() {
+        return idPerson;
+    }
+
+    public void setIdPerson(Integer idPerson) {
+        this.idPerson = idPerson;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

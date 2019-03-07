@@ -12,4 +12,36 @@ public class Person {
         this.lastName = lastName;
         this.idGroup = idGroup;
     }
+
+    public Integer getIdPerson() {
+        return idPerson;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Integer getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdPerson(Integer idPerson) {
+        this.idPerson = idPerson;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setIdGroup(Integer idGroup) {
+        this.idGroup = idGroup;
+    }
 }
