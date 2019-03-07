@@ -33,7 +33,7 @@ public class gerer_groupes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_button:
-                Intent ajout_cours = new Intent(getApplicationContext(), ajout_cours.class);
+                Intent ajout_cours = new Intent(getApplicationContext(), ajout_etudiant.class);
                 startActivity(ajout_cours);
                 break;
             case R.id.import_course:
