@@ -13,7 +13,7 @@ import java.security.acl.Group;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String DATABASEDEBUG = "DebugDB";
+    private static final String DATABASEDEBUG = "dbdebug";
     DBHelper db;
 
 
@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
         db.insertPerson("Valentin", "Pelloin", 4);
         db.insertPerson("Thibault", "Prouteau", 4);
 
-
+         */
          for(Groups g : db.getGroups()){
             Log.d(DATABASEDEBUG, g.getGroupName());
          }
         Log.d(DATABASEDEBUG, "Nb of Rows: " + (((Integer) db.getAll(db.GROUPS_TABLE_NAME).getCount()).toString()));
-        //Cursor c = db.getAll(db.GROUPS_TABLE_NAME);
-        //c.moveToFirst();
-        //Log.d(DATABASEDEBUG, "onClick_gerer_cours: "+(c.getString(c.getColumnIndex(db.GROUPS_COLUMN_NAME)))+" ID:"+((Integer)c.getInt(c.getColumnIndex(db.GROUPS_COLUMN_ID))).toString());
-         /*while ((c.moveToNext())){
+        Cursor c = db.getAll(db.GROUPS_TABLE_NAME);
+        c.moveToFirst();
+        Log.d(DATABASEDEBUG, "onClick_gerer_cours: " + (c.getString(c.getColumnIndex(db.GROUPS_COLUMN_NAME))) + " ID:" + ((Integer) c.getInt(c.getColumnIndex(db.GROUPS_COLUMN_ID))).toString());
+        while ((c.moveToNext())) {
              Log.d(DATABASEDEBUG, "onClick_gerer_cours: "+(c.getString(c.getColumnIndex(db.GROUPS_COLUMN_NAME)))+" ID:"+((Integer)c.getInt(c.getColumnIndex(db.GROUPS_COLUMN_ID))).toString());
          }
         Log.d(DATABASEDEBUG, "onClick_gerer_cours: " + (db.getGroups().isEmpty()));
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (Person p : (db.getPeople())) {
             Log.d(DATABASEDEBUG, "id : " + p.getIdPerson() + " firstName : " + p.getFirstName() + " lastName : " + p.getLastName() + " idGroup : " + p.getIdGroup());
-         }******************/
+        }
 
     }
 

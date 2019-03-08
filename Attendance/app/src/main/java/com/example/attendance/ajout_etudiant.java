@@ -17,10 +17,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ajout_etudiant extends AppCompatActivity {
+    private static final String DBDEBUG = "dbdebug";
     private TextView firstName;
     private TextView lastName;
     private Spinner Group;
     DBHelper db;
+
+    /**
+     * Working, see whether we should implement the Singleton for db usage
+     **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +63,10 @@ public class ajout_etudiant extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Toast.makeText(ajout_etudiant.this,
-                "firstName " + firstName.getText()
-                        + "\n lastName " + lastName.getText()
-                        + "\n group " + String.valueOf(Group),
-                Toast.LENGTH_LONG).show();
+        db.insertPerson(firstName.getText().toString(), lastName.getText().toString(), (db.getGroupId(Group.getSelectedItem().toString())));
+        Log.d(DBDEBUG, "Inserted: " + firstName.getText().toString() + " " + lastName.getText().toString());
+        this.finish();
         return super.onOptionsItemSelected(item);
+
     }
 }

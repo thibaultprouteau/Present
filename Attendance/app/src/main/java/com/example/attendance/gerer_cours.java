@@ -12,6 +12,7 @@ import android.view.MenuItem;
 public class gerer_cours extends AppCompatActivity {
 
     private static final String MENUERROR = "MenuCours";
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

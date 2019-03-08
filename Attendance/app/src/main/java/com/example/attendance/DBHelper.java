@@ -3,6 +3,7 @@ package com.example.attendance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -266,6 +267,15 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (groups.moveToNext());
         }
         return arrayList;
+    }
+
+    public Integer getGroupId(String groupName) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor groups = db.rawQuery("SELECT idGroup from Groups WHERE groupName =?", new String[]{groupName});
+        if (groups.moveToFirst()) {
+            return (groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)));
+        } else throw new CursorIndexOutOfBoundsException("id not found in table");
     }
 
     public ArrayList<Person> getPeople() {

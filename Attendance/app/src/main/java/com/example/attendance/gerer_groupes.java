@@ -59,7 +59,7 @@ public class gerer_groupes extends AppCompatActivity {
                 startActivity(ajout_cours);
                 break;
             case R.id.import_course:
-                //import
+                //do import
                 break;
             default:
                 //nothing
