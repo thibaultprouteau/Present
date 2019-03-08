@@ -30,6 +30,10 @@ public class gerer_groupes extends AppCompatActivity {
         Toolbar toolbar_gerer_groupes = findViewById(R.id.toolbar_gerer_groupes);
         setSupportActionBar(toolbar_gerer_groupes);
         db = new DBHelper(this);
+        getContent();
+    }
+
+    protected void getContent() {
         ArrayList<String> groupNames = new ArrayList<>();
         for (Groups g : db.getGroups()) {
             groupNames.add(g.getGroupName());
@@ -55,7 +59,7 @@ public class gerer_groupes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_button:
-                Intent ajout_cours = new Intent(getApplicationContext(), ajout_etudiant.class);
+                Intent ajout_cours = new Intent(getApplicationContext(), ajout_cours.class);
                 startActivity(ajout_cours);
                 break;
             case R.id.import_course:
@@ -68,4 +72,9 @@ public class gerer_groupes extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        getContent();
+        super.onWindowFocusChanged(hasFocus);
+    }
 }

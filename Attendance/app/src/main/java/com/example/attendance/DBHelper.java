@@ -226,14 +226,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<String> getAllCoursesNames() {
-        ArrayList<String> array_list = new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor courses = getCourseName();
-        courses.moveToFirst();
-        while (courses.isAfterLast() == false) {
-            array_list.add(courses.getString(courses.getColumnIndex(COURSE_COLUMN_NAME)));
+        if (courses.moveToFirst()) {
+            do {
+                arrayList.add(new String(
+                        courses.getString(courses.getColumnIndex(COURSE_COLUMN_NAME))));
+            } while (courses.moveToNext());
         }
-        return array_list;
+        return arrayList;
     }
 
     public ArrayList<Lecture> getLectures(Integer idCourse) {

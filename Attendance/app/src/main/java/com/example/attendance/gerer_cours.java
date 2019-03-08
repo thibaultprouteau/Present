@@ -8,10 +8,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class gerer_cours extends AppCompatActivity {
 
     private static final String MENUERROR = "MenuCours";
+    private static final String DBDEBUG = "dbdebug";
     DBHelper db;
 
     @Override
@@ -21,6 +26,22 @@ public class gerer_cours extends AppCompatActivity {
         Toolbar toolbar_gerer_cours = findViewById(R.id.toolbar_gerer_cours);
         setSupportActionBar(toolbar_gerer_cours);
 
+        db = new DBHelper(this);
+        getContent();
+
+
+
+    }
+
+    protected void getContent() {
+        ArrayList<String> courseName = db.getAllCoursesNames();
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_expandable_list_item_1,
+                courseName);//L'arraylist est vide c'est pour ça que rien ne s'affiche dans la listview
+        Log.d(DBDEBUG, "ArrayList.size  courseName  :" + courseName.size());
+
+        ListView courseListView = findViewById(R.id.list_view_cours);
+        courseListView.setAdapter(itemsAdapter);
     }
 
     @Override
@@ -28,6 +49,8 @@ public class gerer_cours extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_add_import, menu);
         return super.onCreateOptionsMenu(menu);
+
+
     }
 
     @Override
@@ -47,5 +70,13 @@ public class gerer_cours extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
 
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (hasFocus) {
+            getContent();
+        }
+        super.onWindowFocusChanged(hasFocus);
     }
 }
