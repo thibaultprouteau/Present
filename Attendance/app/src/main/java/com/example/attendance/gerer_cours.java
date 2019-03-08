@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -31,6 +33,7 @@ public class gerer_cours extends AppCompatActivity {
 
 
 
+
     }
 
     protected void getContent() {
@@ -42,6 +45,14 @@ public class gerer_cours extends AppCompatActivity {
 
         ListView courseListView = findViewById(R.id.list_view_cours);
         courseListView.setAdapter(itemsAdapter);
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCourse = (String) parent.getItemAtPosition(position);  //gets the item that has been clicked
+                Integer courseId = db.getCourseId(selectedCourse);
+                //TODO Add new intent
+            }
+        });
     }
 
     @Override
@@ -79,4 +90,6 @@ public class gerer_cours extends AppCompatActivity {
         }
         super.onWindowFocusChanged(hasFocus);
     }
+
+
 }

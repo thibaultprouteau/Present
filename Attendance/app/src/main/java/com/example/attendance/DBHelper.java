@@ -238,6 +238,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+
+    public Integer getCourseId(String courseName) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor course = db.rawQuery("SELECT idCourse from Courses WHERE courseName =?", new String[]{courseName});
+        if (course.moveToFirst()) {
+            return (course.getInt(course.getColumnIndex(GROUPS_COLUMN_ID)));
+        } else throw new CursorIndexOutOfBoundsException("id not found in table");
+    }
+
     public ArrayList<Lecture> getLectures(Integer idCourse) {
         ArrayList<Lecture> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
