@@ -19,15 +19,17 @@ public class gerer_cours extends AppCompatActivity {
 
     private static final String MENUERROR = "MenuCours";
     private static final String DBDEBUG = "dbdebug";
+    private static final String GERERCOURS = "gererCours";
     DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerer_cours);
         Toolbar toolbar_gerer_cours = findViewById(R.id.toolbar_gerer_cours);
         setSupportActionBar(toolbar_gerer_cours);
-
+        Log.d(GERERCOURS, "onCreate: gererCours created ");
         db = new DBHelper(this);
         getContent();
 
@@ -49,8 +51,14 @@ public class gerer_cours extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCourse = (String) parent.getItemAtPosition(position);  //gets the item that has been clicked
-                Integer courseId = db.getCourseId(selectedCourse);
+                Integer courseId = Integer.valueOf(db.getCourseId(selectedCourse));
                 //TODO Add new intent
+                Intent intent = new Intent(getApplicationContext(), seances_cours.class);
+                Log.d(GERERCOURS, ("This content " + (String) parent.getItemAtPosition(position)));
+                intent.putExtra("courseId", (db.getCourseId((String) parent.getItemAtPosition(position))));
+                intent.putExtra("courseName", (String) parent.getItemAtPosition(position));
+                startActivity(intent);
+
             }
         });
     }

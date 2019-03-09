@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -83,7 +84,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Course (idCourse  integer PRIMARY KEY, courseName text NOT NULL UNIQUE, description text NOT NULL);");
         Log.i(CREATION, "onCreate: TABLE COURSE CREATED");
-        db.execSQL("CREATE TABLE Lecture (idLecture integer PRIMARY KEY, startTime text NOT NULL, endTime text NOT NULL, lecturer text NOT NULL, location text, idCourse integer NOT NULL, idGroup text NOT NULL, FOREIGN KEY(idGroup) REFERENCES Groups(idGroup), FOREIGN KEY(idCourse) REFERENCES Course(idCourse) );");
+        db.execSQL("CREATE TABLE Lecture (idLecture integer PRIMARY KEY, startTime text NOT NULL, endTime text NOT NULL, lecturer text NOT NULL, location text, idCourse integer NOT NULL, idGroup text NOT NULL, FOREIGN KEY(idGroup) REFERENCES Groups(idGroup), FOREIGN KEY(idCourse) REFERENCES Course(idCourse), UNIQUE(idCourse,idGroup) );");
         Log.i(CREATION, "onCreate: TABLE LECTURE CREATED ");
         db.execSQL("CREATE TABLE Groups (\n" +
                 "  idGroup   integer PRIMARY KEY, \n" +
@@ -93,11 +94,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  firstName text NOT NULL, \n" +
                 "  lastName  text NOT NULL, \n" +
                 "  idGroup   integer NOT NULL, \n" +
+                " UNIQUE(firstName, lastName, idGroup), \n" +
                 "  FOREIGN KEY(idGroup) REFERENCES Groups(idGroup));\n");
         db.execSQL("CREATE TABLE Attendance (\n" +
                 "  idLecture integer NOT NULL, \n" +
                 "  idPerson  integer NOT NULL, \n" +
                 "  status    integer NOT NULL, \n" +
+                "  UNIQUE(idLecture, idPerson), \n" +
                 "  FOREIGN KEY (idLecture) REFERENCES Lecture(idLecture), \n" +
                 "  FOREIGN KEY (idPerson) REFERENCES Person(idPerson), \n" +
                 "  PRIMARY KEY (idLecture, \n" +
@@ -239,13 +242,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public Integer getCourseId(String courseName) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
+    public String getCourseId(String courseName) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor course = db.rawQuery("SELECT idCourse from Courses WHERE courseName =?", new String[]{courseName});
+        Cursor course = this.getAll(COURSE_TABLE_NAME);
+        HashMap<String, String> coursesWithIds = new HashMap<>();
         if (course.moveToFirst()) {
-            return (course.getInt(course.getColumnIndex(GROUPS_COLUMN_ID)));
-        } else throw new CursorIndexOutOfBoundsException("id not found in table");
+            do {
+                coursesWithIds.put(course.getString(course.getColumnIndex(COURSE_COLUMN_NAME)), course.getString(course.getColumnIndex(COURSE_COLUMN_ID)));
+            } while (course.moveToNext());
+        }
+        return coursesWithIds.get(courseName);
     }
 
     public ArrayList<Lecture> getLectures(Integer idCourse) {
@@ -287,6 +293,15 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor groups = db.rawQuery("SELECT idGroup from Groups WHERE groupName =?", new String[]{groupName});
         if (groups.moveToFirst()) {
             return (groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)));
+        } else throw new CursorIndexOutOfBoundsException("id not found in table");
+    }
+
+    public String getGroupName(String groupId) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor groups = db.rawQuery("SELECT groupName from Groups WHERE idGroup =?", new String[]{groupId});
+        if (groups.moveToFirst()) {
+            return (groups.getString(groups.getColumnIndex(GROUPS_COLUMN_NAME)));
         } else throw new CursorIndexOutOfBoundsException("id not found in table");
     }
 

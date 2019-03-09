@@ -22,27 +22,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DBHelper(this);
-    }
-
-    protected void onClick_gerer_cours(View view) {
-        Intent gerer_cours = new Intent(getApplicationContext(), gerer_cours.class);
-        startActivity(gerer_cours);
-        /*********db = new DBHelper(getApplicationContext());
-        //db.truncateTable(db.GROUPS_TABLE_NAME);
-        //db.onCreate(new SQLiteDatabase() db);
         db.cleanDB();
         db.insertGroups("L2");
         db.insertGroups("L3");
         db.insertGroups("M1");
         db.insertGroups("M2");
+        db.insertCourse("DBD", "Database Design");
+        db.insertCourse("AAN", "Machine Learning");
         db.insertGroups("TEACHER");
         db.insertPerson("Nathalie", "Camelin", 5);
         db.insertPerson("Nicolas", "Dugué", 4);
         db.insertPerson("Valentin", "Pelloin", 4);
         db.insertPerson("Thibault", "Prouteau", 4);
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "4");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "5");
+    }
 
-         */
-         for(Groups g : db.getGroups()){
+    protected void onClick_gerer_cours(View view) {
+        Intent gerer_cours = new Intent(getApplicationContext(), gerer_cours.class);
+        startActivity(gerer_cours);
+        /*********db = new DBHelper(getApplicationContext());*/
+        //db.truncateTable(db.GROUPS_TABLE_NAME);
+        //db.onCreate(new SQLiteDatabase() db);
+
+         /*for(Groups g : db.getGroups()){
             Log.d(DATABASEDEBUG, g.getGroupName());
          }
         Log.d(DATABASEDEBUG, "Nb of Rows: " + (((Integer) db.getAll(db.GROUPS_TABLE_NAME).getCount()).toString()));
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d(DATABASEDEBUG, "id : " + p.getIdPerson() + " firstName : " + p.getFirstName() + " lastName : " + p.getLastName() + " idGroup : " + p.getIdGroup());
         }
 
+        Log.d(DATABASEDEBUG, db.getCourseId("DBD").toString());
+*/
     }
 
     protected void onClick_gerer_groupes(View view) {

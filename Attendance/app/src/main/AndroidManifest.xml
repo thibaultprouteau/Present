@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".seances_cours"></activity>
         <activity
             android:name=".prise_presence"
             android:screenOrientation="portrait" />
