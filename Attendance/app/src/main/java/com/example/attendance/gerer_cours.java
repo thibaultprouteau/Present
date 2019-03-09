@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,8 @@ public class gerer_cours extends AppCompatActivity {
         setContentView(R.layout.activity_gerer_cours);
         Toolbar toolbar_gerer_cours = findViewById(R.id.toolbar_gerer_cours);
         setSupportActionBar(toolbar_gerer_cours);
+        getSupportActionBar().setTitle(R.string.gerer_cours);
+
         Log.d(GERERCOURS, "onCreate: gererCours created ");
         db = new DBHelper(this);
         getContent();

@@ -18,9 +18,12 @@ import java.util.ArrayList;
 
 public class ajout_etudiant extends AppCompatActivity {
     private static final String DBDEBUG = "dbdebug";
+    private static final String DEFAULTVALUE = "default spinner value";
     private TextView firstName;
     private TextView lastName;
     private Spinner Group;
+    private String defaultGroupValue;
+    private ArrayAdapter<String> dataAdapter;
     DBHelper db;
 
     /**
@@ -39,8 +42,10 @@ public class ajout_etudiant extends AppCompatActivity {
         firstName = findViewById(R.id.text_view_prenom_etudiant);
         lastName = findViewById(R.id.textView_nom_etudiant);
         Group = findViewById(R.id.spinner_groupe_etudiant);
-
+        defaultGroupValue = getIntent().getStringExtra("defaultGroup");
+        Log.d(DEFAULTVALUE, defaultGroupValue);
         addItemsOnSpinner();
+        Group.setSelection(dataAdapter.getPosition(defaultGroupValue));
     }
 
     @Override
@@ -56,16 +61,23 @@ public class ajout_etudiant extends AppCompatActivity {
         for (Groups g : groups) {
             groupNames.add(g.getGroupName());
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groupNames);
+        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groupNames);
         Group.setAdapter(dataAdapter);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (!firstName.getText().toString().isEmpty() &&
+                !lastName.getText().toString().isEmpty() &&
+                !Group.getSelectedItem().toString().isEmpty()) {
+            db.insertPerson(firstName.getText().toString(), lastName.getText().toString(), (db.getGroupId(Group.getSelectedItem().toString())));
+            Log.d(DBDEBUG, "Inserted: " + firstName.getText().toString() + " " + lastName.getText().toString());
+            this.finish();
+        } else {
+            Toast.makeText(this, getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+        }
 
-        db.insertPerson(firstName.getText().toString(), lastName.getText().toString(), (db.getGroupId(Group.getSelectedItem().toString())));
-        Log.d(DBDEBUG, "Inserted: " + firstName.getText().toString() + " " + lastName.getText().toString());
-        this.finish();
         return super.onOptionsItemSelected(item);
 
     }

@@ -14,5 +14,11 @@
     <string name="end_time">End Time: </string>
     <string name="lecturer2">Lecturer: </string>
     <string name="location">Location: </string>
-    <string name="description">description</string>
+    <string name="description">Description</string>
+    <string name="emptyCourseName">Please supply a course name.</string>
+    <string name="emptyField">Please fill in all the necessary fields.</string>
+    <string name="lectures">Lectures</string>
+    <string name="action_to_perform">Which action would you like to perform ?</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

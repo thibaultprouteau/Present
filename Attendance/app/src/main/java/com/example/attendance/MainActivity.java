@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         db.insertCourse("DBD", "Database Design");
         db.insertCourse("AAN", "Machine Learning");
         db.insertGroups("TEACHER");
-        db.insertPerson("Nathalie", "Camelin", 5);
-        db.insertPerson("Nicolas", "Dugué", 4);
-        db.insertPerson("Valentin", "Pelloin", 4);
-        db.insertPerson("Thibault", "Prouteau", 4);
+        db.insertPerson("Nathalie", "Camelin", "1");
+        db.insertPerson("Nicolas", "Dugué", "1");
+        db.insertPerson("Valentin", "Pelloin", "1");
+        db.insertPerson("Thibault", "Prouteau", "4");
         db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "4");
         db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "5");
     }

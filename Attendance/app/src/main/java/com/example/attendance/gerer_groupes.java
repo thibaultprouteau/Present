@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -29,12 +31,13 @@ public class gerer_groupes extends AppCompatActivity {
         setContentView(R.layout.activity_gerer_groupes);
         Toolbar toolbar_gerer_groupes = findViewById(R.id.toolbar_gerer_groupes);
         setSupportActionBar(toolbar_gerer_groupes);
+        getSupportActionBar().setTitle(R.string.gerer_groupes);
         db = new DBHelper(this);
         getContent();
     }
 
     protected void getContent() {
-        ArrayList<String> groupNames = new ArrayList<>();
+        final ArrayList<String> groupNames = new ArrayList<>();
         for (Groups g : db.getGroups()) {
             groupNames.add(g.getGroupName());
         }
@@ -45,6 +48,19 @@ public class gerer_groupes extends AppCompatActivity {
 
         ListView groupslistView = findViewById(R.id.list_view_groupes);
         groupslistView.setAdapter(itemsAdapter);
+        groupslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(DBDEBUG, "onItemClick: ");
+                String groupId = db.getGroupId(parent.getItemAtPosition(position).toString());
+                Log.d(DBDEBUG, groupId);
+                Intent intent = new Intent(getApplicationContext(), visualize_group_members.class);
+                Log.d(DBDEBUG, db.getGroupId(parent.getItemAtPosition(position).toString()));
+                intent.putExtra("idGroup", groupId)
+                        .putExtra("groupName", ((String) parent.getItemAtPosition(position)));
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -59,7 +75,7 @@ public class gerer_groupes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_button:
-                Intent ajout_cours = new Intent(getApplicationContext(), ajout_cours.class);
+                Intent ajout_cours = new Intent(getApplicationContext(), ajout_etudiant.class);
                 startActivity(ajout_cours);
                 break;
             case R.id.import_course:

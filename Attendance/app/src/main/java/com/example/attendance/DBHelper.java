@@ -170,7 +170,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertPerson(String firstName, String lastName, Integer idGroup) {
+    public boolean insertPerson(String firstName, String lastName, String idGroup) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PERSON_COLUMN_FIRST_NAME, firstName);
@@ -189,6 +189,44 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(ATTENDANCE_TABLE_NAME, null, contentValues);
         return true;
     }
+
+    public boolean deletePerson(String firstName, String lastName, String idGroup) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + PERSON_TABLE_NAME + " WHERE " + PERSON_COLUMN_FIRST_NAME + "=? AND " + PERSON_COLUMN_LAST_NAME + "=? AND " + PERSON_COLUMN_GROUPID + "=?", new String[]{firstName, lastName, idGroup});
+        db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
+                ATTENDANCE_COLUMN_PERSONID + " NOT IN (SELECT " + PERSON_COLUMN_ID + " FROM " + PERSON_TABLE_NAME + ");", null);
+
+        return true;
+    }
+
+    public boolean deleteGroup(String groupName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(PERSON_COLUMN_GROUPID, "-1");
+        db.execSQL("DELETE FROM " + GROUPS_TABLE_NAME + " WHERE " + GROUPS_COLUMN_NAME + "=?", new String[]{groupName});
+        db.update(PERSON_TABLE_NAME, cv, PERSON_COLUMN_GROUPID + "=?", new String[]{getGroupId(groupName)});
+        db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " +
+                LECTURE_COLUMN_GROUPID + " NOT IN " +
+                "(SELECT " + GROUPS_COLUMN_NAME + " FROM " + GROUPS_COLUMN_NAME + ");", null);
+        db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
+                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");", null);
+
+        return true;
+    }
+
+    public boolean deleteCourse(String courseName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(PERSON_COLUMN_GROUPID, "-1");
+        db.execSQL("DELETE FROM " + COURSE_TABLE_NAME + " WHERE " + COURSE_COLUMN_NAME + "=?", new String[]{courseName});
+        db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " +
+                LECTURE_COLUMN_COURSEID + " NOT IN " +
+                "(SELECT " + COURSE_COLUMN_ID + " FROM " + COURSE_TABLE_NAME + ");", null);
+        db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
+                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");", null);
+        return true;
+    }
+
 
     public boolean truncateTable(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -215,7 +253,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public Cursor getGroupMembers(Integer idGroup) {
+    public Cursor getGroupMembers(String idGroup) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from " + PERSON_TABLE_NAME + " where " + PERSON_COLUMN_GROUPID + " =?", new String[]{idGroup.toString()});
         return res;
@@ -287,13 +325,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public Integer getGroupId(String groupName) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor groups = db.rawQuery("SELECT idGroup from Groups WHERE groupName =?", new String[]{groupName});
-        if (groups.moveToFirst()) {
-            return (groups.getInt(groups.getColumnIndex(GROUPS_COLUMN_ID)));
-        } else throw new CursorIndexOutOfBoundsException("id not found in table");
+    public String getGroupId(String groupName) {
+        HashMap<String, String> groups = new HashMap<>();
+        for (Groups g : getGroups()) {
+            groups.put(g.getGroupName(), g.getIdGroup().toString());
+        }
+        return (groups.get(groupName));
     }
 
     public String getGroupName(String groupId) {
@@ -321,7 +358,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public ArrayList<Person> getPeople(Integer idGroup) {
+    public ArrayList<Person> getPeople(String idGroup) {
         ArrayList<Person> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getGroupMembers(idGroup);

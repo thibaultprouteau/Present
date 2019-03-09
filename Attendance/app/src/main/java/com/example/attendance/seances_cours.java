@@ -29,11 +29,14 @@ public class seances_cours extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seances_cours);
 
-        Toolbar toolbar_seances_cours = findViewById(R.id.toolbar_seances_cours);
-        setSupportActionBar(toolbar_seances_cours);
         db = new DBHelper(this);
         courseId = getIntent().getStringExtra("courseId");
         courseName = getIntent().getStringExtra("courseName");
+
+        Toolbar toolbar_seances_cours = findViewById(R.id.toolbar_seances_cours);
+        setSupportActionBar(toolbar_seances_cours);
+        getSupportActionBar().setTitle(getString(R.string.lectures) + " " + courseName);
+
         getContent();
 
     }

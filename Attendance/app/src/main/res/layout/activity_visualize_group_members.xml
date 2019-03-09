@@ -4,24 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".seances_cours">
+    tools:context=".visualize_group_members">
 
     <include
         layout="@layout/toolbar"
-        android:id="@+id/toolbar_seances_cours"></include>
+        android:id="@+id/toolbar_visualize_students"></include>
 
     <ListView
-        android:id="@+id/list_view_seances"
+        android:id="@+id/list_view_group_members"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_seances_cours"
-        app:layout_constraintVertical_bias="0.625" />
-
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_visualize_students" />
 </android.support.constraint.ConstraintLayout>

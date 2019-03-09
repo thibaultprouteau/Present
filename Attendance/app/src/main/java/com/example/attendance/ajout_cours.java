@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ajout_cours extends AppCompatActivity {
 
@@ -39,9 +40,13 @@ public class ajout_cours extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        db.insertCourse(courseName.getText().toString(), description.getText().toString());
-        Log.d(DBDEBUG, "Inserted values  CourseName: " + courseName.getText().toString() + " Lecturer: " + description.getText().toString());
-        this.finish();
+        if (!courseName.getText().toString().isEmpty()) {
+            db.insertCourse(courseName.getText().toString(), description.getText().toString());
+            Log.d(DBDEBUG, "Inserted values  CourseName: " + courseName.getText().toString() + " Lecturer: " + description.getText().toString());
+            this.finish();
+        } else {
+            Toast.makeText(this, getString(R.string.emptyCourseName), Toast.LENGTH_SHORT).show();
+        }
         return super.onOptionsItemSelected(item);
     }
 }
