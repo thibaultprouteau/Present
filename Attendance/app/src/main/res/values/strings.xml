@@ -14,6 +14,7 @@
     <string name="end_time">End Time: </string>
     <string name="lecturer2">Lecturer: </string>
     <string name="location">Location: </string>
+    <string name="location_">Location</string>
     <string name="description">Description</string>
     <string name="invalidCourseName">Please supply a valid course name.</string>
     <string name="invalidGroupName">Please supply a valid course name.</string>

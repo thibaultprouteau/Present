@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,26 +71,68 @@ public class seances_cours extends AppCompatActivity {
 
     protected void getContent() {
         HashMap<String, String> item;
+        lectures.clear();
         Log.d(MENUERROR, "Value of id" + courseId);
         for (Lecture l : db.getLectures(Integer.valueOf(courseId))) {
             item = new HashMap<String, String>();
-            item.put("line1", courseName);
-            item.put("line2", db.getGroupName(l.getIdGroup().toString()));
-            item.put("line3", getString(R.string.start_time) + " " + l.getStartTime() + " " + getString(R.string.end_time) + " " + l.getEndTime());
-            item.put("line4", getString(R.string.lecturer2) + " " + l.getLecturer() + " " + getString(R.string.location) + " " + l.getLocation());
+            item.put("courseName", courseName);
+            item.put("groupName", db.getGroupName(l.getIdGroup().toString()));
+            item.put("start", getString(R.string.start_time) + " " + l.getStartTime());
+            item.put("end", getString(R.string.end_time) + " " + l.getEndTime());
+            item.put("lecturer", getString(R.string.lecturer2) + " " + l.getLecturer() + " " + getString(R.string.location) + " " + l.getLocation());
             lectures.add(item);
         }
         adapter = new SimpleAdapter(this,
                 lectures, R.layout.list_item,
-                new String[]{"line1", "line2", "line3", "line4"},
-                new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d});
+                new String[]{"courseName", "groupName", "start", "end", "lecturer"},
+                new int[]{R.id.line_a, R.id.line_b, R.id.line_e, R.id.line_c, R.id.line_d});
         lecturesListView = findViewById(R.id.list_view_seances);
         lecturesListView.setAdapter(adapter);
+        lecturesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HashMap<String, String> valuesRetrieved = (HashMap<String, String>) (((ListView) seances_cours.this.findViewById(R.id.list_view_seances)).getItemAtPosition((int) id));
+                HashMap<String, String> valuesOfSelectedItem = new HashMap<>();
+                valuesOfSelectedItem.put("courseName", valuesRetrieved.get("courseName"));
+                valuesOfSelectedItem.put("groupName", valuesRetrieved.get("groupName"));
+
+                String[] startTime = valuesRetrieved.get("start").split(": ");
+                Log.d(MENUERROR, "onItemClick: " + startTime.length);
+                Log.d(MENUERROR, "onItemClick: " + startTime[1]);
+                valuesOfSelectedItem.put("start", valuesRetrieved.get("start"));
+                String[] endTime = valuesRetrieved.get("end").split(": ");
+                valuesOfSelectedItem.put("end", endTime[1]);
+                Log.d(MENUERROR, "onItemClick: " + endTime[1]);
+                String[] lecturerLocation = valuesRetrieved.get("lecturer").split(": ");
+                String[] temp = lecturerLocation[2].split(getString(R.string.location_));
+                valuesOfSelectedItem.put("lecturer", lecturerLocation[1]);
+                valuesOfSelectedItem.put("location", temp[0]);
+                Log.d(MENUERROR, "onItemClick: " + valuesOfSelectedItem.get("location"));
+                String lectureId = null;
+                try {
+                    lectureId = db.getLectureColumnId(valuesOfSelectedItem.get("start"),
+                            valuesOfSelectedItem.get("end"),
+                            valuesOfSelectedItem.get("lecturer"),
+                            valuesOfSelectedItem.get("location"),
+                            db.getGroupId(valuesOfSelectedItem.get("groupName")), courseId);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(getApplicationContext(), record_attendance.class);
+                intent.putExtra("lectureId", lectureId);
+                intent.putExtra("title", courseName + " " + valuesOfSelectedItem.get("start"));
+                intent.putExtra("groupId", db.getGroupId(valuesOfSelectedItem.get("groupName")).toString());
+                Log.d(MENUERROR, "onItemClick: groupId " + db.getGroupId(valuesOfSelectedItem.get("groupName")));
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus) {
+
             getContent();
         }
         super.onWindowFocusChanged(hasFocus);

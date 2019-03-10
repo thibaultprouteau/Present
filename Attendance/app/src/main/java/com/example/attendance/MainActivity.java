@@ -23,19 +23,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = new DBHelper(this);
         db.cleanDB();
-        db.insertGroups("L2");
-        db.insertGroups("L3");
-        db.insertGroups("M1");
-        db.insertGroups("M2");
+        db.insertGroups("L2", 1);
+        db.insertGroups("L3", 2);
+        db.insertGroups("M1", 3);
+        db.insertGroups("M2", 4);
+        db.insertGroups("UNCATEGORIZED", -1);
         db.insertCourse("DBD", "Database Design");
         db.insertCourse("AAN", "Machine Learning");
-        db.insertGroups("TEACHER");
-        db.insertPerson("Nathalie", "Camelin", "1");
-        db.insertPerson("Nicolas", "Dugué", "1");
+        db.insertGroups("TEACHER", -2);
+        db.insertPerson("Nathalie", "Camelin", "-2");
+        db.insertPerson("Nicolas", "Dugué", "-2");
+        db.insertPerson("Valérie", "Renault", "-2");
         db.insertPerson("Valentin", "Pelloin", "1");
         db.insertPerson("Thibault", "Prouteau", "4");
-        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "4");
-        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "5");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "1");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "2");
     }
 
     protected void onClick_gerer_cours(View view) {

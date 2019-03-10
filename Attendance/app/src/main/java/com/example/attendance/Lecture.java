@@ -20,6 +20,14 @@ public class Lecture {
         this.idCours = idCours;
     }
 
+    public Integer getIdLecture() {
+        return idLecture;
+    }
+
+    public void setIdLecture(Integer idLecture) {
+        this.idLecture = idLecture;
+    }
+
     public Integer getIdGroup() {
         return idGroup;
     }

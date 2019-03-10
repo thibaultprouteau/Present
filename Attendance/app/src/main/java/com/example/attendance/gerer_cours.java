@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ public class gerer_cours extends AppCompatActivity {
     private static final String MENUERROR = "MenuCours";
     private static final String DBDEBUG = "dbdebug";
     private static final String GERERCOURS = "gererCours";
+    private String itemPressed;
+    private ListView courseListView;
     DBHelper db;
 
     @Override
@@ -48,7 +51,7 @@ public class gerer_cours extends AppCompatActivity {
                 courseName);//L'arraylist est vide c'est pour ça que rien ne s'affiche dans la listview
         Log.d(DBDEBUG, "ArrayList.size  courseName  :" + courseName.size());
 
-        ListView courseListView = findViewById(R.id.list_view_cours);
+        courseListView = findViewById(R.id.list_view_cours);
         courseListView.setAdapter(itemsAdapter);
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,6 +66,7 @@ public class gerer_cours extends AppCompatActivity {
 
             }
         });
+        registerForContextMenu(courseListView);
     }
 
     @Override
@@ -101,5 +105,27 @@ public class gerer_cours extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
     }
 
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        itemPressed = (String) courseListView.getItemAtPosition(acmi.position);
+        menu.setHeaderTitle(getString(R.string.action_to_perform));
+        menu.add(0, v.getId(), 0, getString(R.string.edit));
+        menu.add(0, v.getId(), 0, getString(R.string.delete));
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == getString(R.string.edit)) {
+            //TODO edit
+
+        } else {
+            db.deleteCourse(itemPressed);
+        }
+        return super.onContextItemSelected(item);
+    }
 }
+
+
+

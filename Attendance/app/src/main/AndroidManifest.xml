@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".add_lecture"></activity>
+        <activity android:name=".record_attendance"></activity>
+        <activity android:name=".add_lecture" />
         <activity android:name=".ajout_groupe" />
         <activity android:name=".visualize_group_members" />
         <activity

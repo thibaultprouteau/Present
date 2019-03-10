@@ -84,7 +84,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Course (idCourse  integer PRIMARY KEY, courseName text NOT NULL UNIQUE, description text NOT NULL);");
         Log.i(CREATION, "onCreate: TABLE COURSE CREATED");
-        db.execSQL("CREATE TABLE Lecture (idLecture integer PRIMARY KEY, startTime text NOT NULL, endTime text NOT NULL, lecturer text NOT NULL, location text, idCourse integer NOT NULL, idGroup text NOT NULL, FOREIGN KEY(idGroup) REFERENCES Groups(idGroup), FOREIGN KEY(idCourse) REFERENCES Course(idCourse), UNIQUE(idCourse,idGroup) );");
+        db.execSQL("CREATE TABLE Lecture (idLecture integer PRIMARY KEY, startTime text NOT NULL, endTime text NOT NULL, lecturer text NOT NULL, location text, idCourse integer NOT NULL, idGroup text NOT NULL, FOREIGN KEY(idGroup) REFERENCES Groups(idGroup), FOREIGN KEY(idCourse) REFERENCES Course(idCourse), UNIQUE(idCourse,idGroup,startTime,endTime) );");
         Log.i(CREATION, "onCreate: TABLE LECTURE CREATED ");
         db.execSQL("CREATE TABLE Groups (\n" +
                 "  idGroup   integer PRIMARY KEY, \n" +
@@ -203,11 +203,13 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(PERSON_COLUMN_GROUPID, "-1");
-        db.execSQL("DELETE FROM " + GROUPS_TABLE_NAME + " WHERE " + GROUPS_COLUMN_NAME + "=?", new String[]{groupName});
         db.update(PERSON_TABLE_NAME, cv, PERSON_COLUMN_GROUPID + "=?", new String[]{getGroupId(groupName)});
+        db.execSQL("DELETE FROM " + GROUPS_TABLE_NAME + " WHERE " + GROUPS_COLUMN_NAME + "=?", new String[]{groupName});
+
+        //db.execSQL("UPDATE "+PERSON_TABLE_NAME+" SET "+PERSON_COLUMN_GROUPID+"+?");
         db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " +
                 LECTURE_COLUMN_GROUPID + " NOT IN " +
-                "(SELECT " + GROUPS_COLUMN_NAME + " FROM " + GROUPS_TABLE_NAME + ");");
+                "(SELECT " + GROUPS_COLUMN_ID + " FROM " + GROUPS_TABLE_NAME + ");");
         db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
                 ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");");
 
@@ -221,9 +223,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + COURSE_TABLE_NAME + " WHERE " + COURSE_COLUMN_NAME + "=?", new String[]{courseName});
         db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " +
                 LECTURE_COLUMN_COURSEID + " NOT IN " +
-                "(SELECT " + COURSE_COLUMN_ID + " FROM " + COURSE_TABLE_NAME + ");", null);
+                "(SELECT " + COURSE_COLUMN_ID + " FROM " + COURSE_TABLE_NAME + ");");
         db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
-                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");", null);
+                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");");
         return true;
     }
 
@@ -392,6 +394,23 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (aR.moveToNext());
         }
         return arrayList;
+
+    }
+
+    public String getLectureColumnId(String start, String end, String lecturer, String location, String groupId, String courseId) throws NoSuchFieldException {
+        ArrayList<Lecture> lectures = getLectures(Integer.valueOf(courseId));
+        for (Lecture l : lectures) {
+            if (l.getStartTime().equals(start) &&
+                    l.getEndTime().equals(end) &&
+                    l.getLecturer().equals(lecturer) &&
+                    l.getLocation().equals(location) &&
+                    l.getIdGroup().toString().equals(groupId) &&
+                    l.getIdCours().toString().equals(courseId)) {
+                return l.getIdLecture().toString();
+            }
+            throw new NoSuchFieldException("No id found for this lecture");
+        }
+        return "error";
 
     }
 
