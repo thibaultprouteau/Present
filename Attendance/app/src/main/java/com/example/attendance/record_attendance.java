@@ -18,6 +18,7 @@ import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class record_attendance extends AppCompatActivity {
 
@@ -64,16 +65,27 @@ public class record_attendance extends AppCompatActivity {
 
                 break;
             case R.id.absent:
-                //import
+
                 break;
             case R.id.save_attendance:
-                //load in db
+
                 break;
             default:
                 //nothing
                 Log.e(MENUERROR, "Unknown menu item pressed");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void insertRecords(HashMap<String, String> records) throws NoSuchFieldException {
+        Iterator it = records.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) it.next();
+            String[] attendee = pair.getKey().toString().split(" ");
+            String attendeeId = db.getPersonColumnId(attendee[0], attendee[1], groupId);
+            db.insertAttendance(lectureId, attendeeId, pair.getValue().toString());
+            Log.d(VISUALIZE, "insertRecords: " + lectureId + " " + attendeeId + "" + pair.getValue().toString());
+        }
     }
 
     protected void getContent() {

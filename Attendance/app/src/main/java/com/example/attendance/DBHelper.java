@@ -7,6 +7,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -379,6 +380,15 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (people.moveToNext());
         }
         return arrayList;
+    }
+
+    public String getPersonColumnId(String firstName, String lastName, String groupId) throws NoSuchFieldException {
+        ArrayList<Person> peoples = getPeople(groupId);
+        for (Person p : peoples) {
+            if (p.getFirstName() == firstName && p.getLastName() == lastName)
+                return p.getIdPerson().toString();
+        }
+        throw new NoSuchFieldException("No id found for this person");
     }
 
     public ArrayList<AttendanceRecord> getAttendanceRecords(Integer idLecture) {
