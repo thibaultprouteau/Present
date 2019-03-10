@@ -41,11 +41,14 @@ public class ajout_cours extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!courseName.getText().toString().isEmpty()) {
-            db.insertCourse(courseName.getText().toString(), description.getText().toString());
-            Log.d(DBDEBUG, "Inserted values  CourseName: " + courseName.getText().toString() + " Lecturer: " + description.getText().toString());
-            this.finish();
-        } else {
-            Toast.makeText(this, getString(R.string.emptyCourseName), Toast.LENGTH_SHORT).show();
+            if (db.getCourseId(courseName.getText().toString()).isEmpty()) {
+                db.insertCourse(courseName.getText().toString(), description.getText().toString());
+                Log.d(DBDEBUG, "Inserted values  CourseName: " + courseName.getText().toString() + " Lecturer: " + description.getText().toString());
+                this.finish();
+            } else {
+                Toast.makeText(this, getString(R.string.invalidCourseName), Toast.LENGTH_SHORT).show();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

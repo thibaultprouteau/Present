@@ -194,7 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + PERSON_TABLE_NAME + " WHERE " + PERSON_COLUMN_FIRST_NAME + "=? AND " + PERSON_COLUMN_LAST_NAME + "=? AND " + PERSON_COLUMN_GROUPID + "=?", new String[]{firstName, lastName, idGroup});
         db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
-                ATTENDANCE_COLUMN_PERSONID + " NOT IN (SELECT " + PERSON_COLUMN_ID + " FROM " + PERSON_TABLE_NAME + ");", null);
+                ATTENDANCE_COLUMN_PERSONID + " NOT IN (SELECT " + PERSON_COLUMN_ID + " FROM " + PERSON_TABLE_NAME + ");");
 
         return true;
     }
@@ -207,9 +207,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update(PERSON_TABLE_NAME, cv, PERSON_COLUMN_GROUPID + "=?", new String[]{getGroupId(groupName)});
         db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " +
                 LECTURE_COLUMN_GROUPID + " NOT IN " +
-                "(SELECT " + GROUPS_COLUMN_NAME + " FROM " + GROUPS_COLUMN_NAME + ");", null);
+                "(SELECT " + GROUPS_COLUMN_NAME + " FROM " + GROUPS_TABLE_NAME + ");");
         db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
-                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");", null);
+                ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");");
 
         return true;
     }
@@ -224,6 +224,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "(SELECT " + COURSE_COLUMN_ID + " FROM " + COURSE_TABLE_NAME + ");", null);
         db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " +
                 ATTENDANCE_COLUMN_LECTUREID + " NOT IN (SELECT " + LECTURE_COLUMN_ID + " FROM " + LECTURE_TABLE_NAME + ");", null);
+        return true;
+    }
+
+    public boolean deleteLecture(String lectureId) {
+        //TODO delete lecture + attendance records
         return true;
     }
 

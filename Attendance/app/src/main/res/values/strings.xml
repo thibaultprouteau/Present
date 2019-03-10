@@ -15,10 +15,16 @@
     <string name="lecturer2">Lecturer: </string>
     <string name="location">Location: </string>
     <string name="description">Description</string>
-    <string name="emptyCourseName">Please supply a course name.</string>
+    <string name="invalidCourseName">Please supply a valid course name.</string>
+    <string name="invalidGroupName">Please supply a valid course name.</string>
+    <string name="emptyGroupName">Please supply a group name.</string>
     <string name="emptyField">Please fill in all the necessary fields.</string>
     <string name="lectures">Lectures</string>
     <string name="action_to_perform">Which action would you like to perform ?</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="group_name">Group Name</string>
+    <string name="new_group">New Group</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 </resources>

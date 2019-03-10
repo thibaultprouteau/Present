@@ -55,7 +55,6 @@ public class gerer_cours extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCourse = (String) parent.getItemAtPosition(position);  //gets the item that has been clicked
                 Integer courseId = Integer.valueOf(db.getCourseId(selectedCourse));
-                //TODO Add new intent
                 Intent intent = new Intent(getApplicationContext(), seances_cours.class);
                 Log.d(GERERCOURS, ("This content " + (String) parent.getItemAtPosition(position)));
                 intent.putExtra("courseId", (db.getCourseId((String) parent.getItemAtPosition(position))));

@@ -52,8 +52,9 @@ public class seances_cours extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_button:
-                Intent ajout_cours = new Intent(getApplicationContext(), ajout_cours.class);
-                startActivity(ajout_cours);
+                Intent ajout_seance = new Intent(getApplicationContext(), add_lecture.class);
+                ajout_seance.putExtra("courseName", courseName);
+                startActivity(ajout_seance);
                 break;
             case R.id.import_course:
                 //import

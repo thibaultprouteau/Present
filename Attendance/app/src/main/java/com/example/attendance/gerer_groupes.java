@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,9 @@ public class gerer_groupes extends AppCompatActivity {
 
     private static final String DBDEBUG = "dbdebug";
     DBHelper db;
+    private ListView groupslistView;
+    private String itemPressed;
+
 
     private static final String MENUERROR = "MenuGroupes";
 
@@ -46,7 +50,7 @@ public class gerer_groupes extends AppCompatActivity {
                 groupNames);//L'arraylist est vide c'est pour ça que rien ne s'affiche dans la listview
         Log.d(DBDEBUG, "ArrayList.size " + groupNames.size());
 
-        ListView groupslistView = findViewById(R.id.list_view_groupes);
+        groupslistView = findViewById(R.id.list_view_groupes);
         groupslistView.setAdapter(itemsAdapter);
         groupslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,6 +65,7 @@ public class gerer_groupes extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        registerForContextMenu(groupslistView);
 
     }
 
@@ -75,7 +80,7 @@ public class gerer_groupes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_button:
-                Intent ajout_cours = new Intent(getApplicationContext(), ajout_etudiant.class);
+                Intent ajout_cours = new Intent(getApplicationContext(), ajout_groupe.class);
                 startActivity(ajout_cours);
                 break;
             case R.id.import_course:
@@ -92,5 +97,26 @@ public class gerer_groupes extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         getContent();
         super.onWindowFocusChanged(hasFocus);
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        itemPressed = (String) groupslistView.getItemAtPosition(acmi.position);
+        menu.setHeaderTitle(getString(R.string.action_to_perform));
+        menu.add(0, v.getId(), 0, getString(R.string.edit));
+        menu.add(0, v.getId(), 0, getString(R.string.delete));
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == getString(R.string.edit)) {
+            //TODO edit
+
+        } else {
+            db.deleteGroup(itemPressed);
+        }
+        return super.onContextItemSelected(item);
     }
 }
