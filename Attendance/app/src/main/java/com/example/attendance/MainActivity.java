@@ -35,9 +35,15 @@ public class MainActivity extends AppCompatActivity {
         db.insertPerson("Nicolas", "Dugué", "-2");
         db.insertPerson("Valérie", "Renault", "-2");
         db.insertPerson("Valentin", "Pelloin", "1");
+        db.insertPerson("Marie", "Marthe", "1");
+        db.insertPerson("Maria", "Molina", "1");
+        db.insertAttendance("1", "4", "1");
+        db.insertAttendance("1", "5", "1");
+        db.insertAttendance("1", "6", "3");
         db.insertPerson("Thibault", "Prouteau", "4");
         db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "1");
         db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "2");
+        db.insertLecture("3", "2019-03-22 08:00", "2019-03-22 10:00", "Laurent Bougares", "IC2-114", "2", "3");
     }
 
     protected void onClick_gerer_cours(View view) {

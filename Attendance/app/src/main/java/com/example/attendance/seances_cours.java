@@ -72,7 +72,7 @@ public class seances_cours extends AppCompatActivity {
     protected void getContent() {
         HashMap<String, String> item;
         lectures.clear();
-        Log.d(MENUERROR, "Value of id" + courseId);
+        Log.d(MENUERROR, "Value of id course" + courseId);
         for (Lecture l : db.getLectures(Integer.valueOf(courseId))) {
             item = new HashMap<String, String>();
             item.put("courseName", courseName);
@@ -99,35 +99,47 @@ public class seances_cours extends AppCompatActivity {
                 String[] startTime = valuesRetrieved.get("start").split(": ");
                 Log.d(MENUERROR, "onItemClick: " + startTime.length);
                 Log.d(MENUERROR, "onItemClick: " + startTime[1]);
-                valuesOfSelectedItem.put("start", valuesRetrieved.get("start"));
+                valuesOfSelectedItem.put("start", valuesRetrieved.get("start").replace(getString(R.string.start_time) + " ", ""));
                 String[] endTime = valuesRetrieved.get("end").split(": ");
                 valuesOfSelectedItem.put("end", endTime[1]);
                 Log.d(MENUERROR, "onItemClick: " + endTime[1]);
                 String[] lecturerLocation = valuesRetrieved.get("lecturer").split(": ");
                 String[] temp = lecturerLocation[2].split(getString(R.string.location_));
-                valuesOfSelectedItem.put("lecturer", lecturerLocation[1]);
+                Log.d(MENUERROR, "lecturer Location contents: " + lecturerLocation[1]);
+                //valuesOfSelectedItem.put("lecturer", lecturerLocation[1]);
+                String[] temp2 = lecturerLocation[1].split(" ");
+                valuesOfSelectedItem.put("lecturer", temp2[0] + " " + temp2[1]);
                 valuesOfSelectedItem.put("location", temp[0]);
                 Log.d(MENUERROR, "onItemClick: " + valuesOfSelectedItem.get("location"));
                 String lectureId = null;
-                try {
-                    lectureId = db.getLectureColumnId(valuesOfSelectedItem.get("start"),
-                            valuesOfSelectedItem.get("end"),
-                            valuesOfSelectedItem.get("lecturer"),
-                            valuesOfSelectedItem.get("location"),
-                            db.getGroupId(valuesOfSelectedItem.get("groupName")), courseId);
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
+                /*********Debug*////////////
+
+                for (Lecture l : db.getLectures()) {
+                    Log.d(MENUERROR, "LectureID: " + "|" + l.getIdLecture().toString() + "|" + l.getStartTime() + "|" + l.getEndTime() + "|" + l.getLecturer() + "|" + l.getLocation() + "|");
+                    Log.d(MENUERROR, "ValuesOfSelectedItem:" + "|" + valuesOfSelectedItem.get("start") + "|" + valuesOfSelectedItem.get("end") + "|" + valuesOfSelectedItem.get("lecturer") + "|" + valuesOfSelectedItem.get("location") + "|");
+                    if (l.getStartTime().equals(valuesOfSelectedItem.get("start")) &&
+                            l.getEndTime().equals(valuesOfSelectedItem.get("end")) &&
+                            l.getLocation().equals(valuesOfSelectedItem.get("location")) &&
+                            l.getLecturer().equals(valuesOfSelectedItem.get("lecturer"))) {
+                        Log.d(MENUERROR, "lectureID: " + l.getIdLecture());
+                        lectureId = l.getIdLecture().toString();
+
+                    }
                 }
                 Intent intent = new Intent(getApplicationContext(), record_attendance.class);
+                Log.d(MENUERROR, "Lecture id: " + lectureId);
                 intent.putExtra("lectureId", lectureId);
                 intent.putExtra("title", courseName + " " + valuesOfSelectedItem.get("start"));
                 intent.putExtra("groupId", db.getGroupId(valuesOfSelectedItem.get("groupName")).toString());
                 Log.d(MENUERROR, "onItemClick: groupId " + db.getGroupId(valuesOfSelectedItem.get("groupName")));
                 startActivity(intent);
 
+
             }
+
         });
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

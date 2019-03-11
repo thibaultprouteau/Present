@@ -2,6 +2,7 @@ package com.example.attendance;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class record_attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_attendance);
         lectureId = getIntent().getStringExtra("lectureId");
+        Log.d(VISUALIZE, "lectureId" + lectureId);
         title = getIntent().getStringExtra("title");
         groupId = getIntent().getStringExtra("groupId");
         Log.d(MENUERROR, "onCreate: groupId " + groupId);
@@ -47,6 +49,7 @@ public class record_attendance extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         db = new DBHelper(this);
         getContent();
+
 
 
     }
@@ -62,13 +65,26 @@ public class record_attendance extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.present:
-
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    listView.getChildAt(i).setBackgroundColor(Color.parseColor("#aaf683"));
+                    String attendee = listView.getItemAtPosition(i).toString();
+                    records.put(attendee, "1");
+                }
                 break;
             case R.id.absent:
-
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    listView.getChildAt(i).setBackgroundColor(Color.parseColor("#ee6055"));
+                    String attendee = listView.getItemAtPosition(i).toString();
+                    records.put(attendee, "3");
+                }
                 break;
             case R.id.save_attendance:
-
+                try {
+                    insertRecords(records);
+                    finish();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 //nothing
@@ -88,7 +104,9 @@ public class record_attendance extends AppCompatActivity {
         }
     }
 
+
     protected void getContent() {
+
         groupMembers = new ArrayList<String>();
         //Log.d(VISUALIZE, Integer.toString(db.getPeople().size()));
         System.out.println(groupId.isEmpty());
@@ -100,24 +118,48 @@ public class record_attendance extends AppCompatActivity {
         Log.d("LVDEBUG", "Listview to visualize students created");
         listView = findViewById(R.id.list_view_prise_presence);
         listView.setAdapter(adapter);
+
+
+        if (!records.isEmpty()) {
+            Iterator it = records.entrySet().iterator();
+            while (it.hasNext()) {
+                HashMap.Entry pair = (HashMap.Entry) it.next();
+                int position = adapter.getPosition(pair.getKey().toString());
+                if (pair.getValue().toString().equals("1")) {
+                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
+                } else if (pair.getValue().toString().equals("2")) {
+                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#ee6055"));
+                } else if (pair.getValue().toString().equals("3")) {
+                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
+                }
+            }
+
+
+        }
+
+
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (!records.containsKey(parent.getItemAtPosition(position).toString())) {
                     records.put(parent.getItemAtPosition(position).toString(), "1");
-                    Log.d(VISUALIZE, "onItemClick: inserted value 1 for" + records.toString());
+                    Log.d(VISUALIZE, "onItemClick: value 1 " + records.toString());
                     parent.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
                 } else if (records.get(parent.getItemAtPosition(position).toString()).equals("1")) {
-                    Log.d(VISUALIZE, "onItemClick: value2");
+                    Log.d(VISUALIZE, "onItemClick: value 2" + records.toString());
                     records.put(parent.getItemAtPosition(position).toString(), "2");
                     parent.getChildAt(position).setBackgroundColor(Color.parseColor("#ee6055"));
 
                 } else if (records.get(parent.getItemAtPosition(position).toString()).equals("2")) {
                     records.put(parent.getItemAtPosition(position).toString(), "3");
+                    Log.d(VISUALIZE, "onItemClick: value 3" + records.toString());
                     parent.getChildAt(position).setBackgroundColor(Color.parseColor("#ffd97d"));
                 } else if (records.get(parent.getItemAtPosition(position).toString()).equals("3")) {
                     records.put(parent.getItemAtPosition(position).toString(), "1");
+                    Log.d(VISUALIZE, "onItemClick: value 1" + records.toString());
                     parent.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
                 }
 

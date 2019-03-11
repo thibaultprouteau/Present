@@ -104,7 +104,6 @@ public class gerer_cours extends AppCompatActivity {
         }
         super.onWindowFocusChanged(hasFocus);
     }
-
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
