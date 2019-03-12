@@ -283,7 +283,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAttendanceRecordsCursor(Integer idLecture) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + PERSON_TABLE_NAME + " where " + PERSON_COLUMN_GROUPID + " =?", new String[]{idLecture.toString()});
+        Cursor res = db.rawQuery("select * from " + ATTENDANCE_TABLE_NAME + " where " + ATTENDANCE_COLUMN_LECTUREID + " =?", new String[]{idLecture.toString()});
         return res;
     }
 
@@ -420,7 +420,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Person> getPeople(String idGroup) {
         ArrayList<Person> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getGroupMembers(idGroup);
         if (people.moveToFirst()) {
             do {
@@ -441,6 +440,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 return p.getIdPerson().toString();
         }
         throw new NoSuchFieldException("No id found for this person");
+    }
+
+    public String getPersonColumnFirstName(Integer idPerson) throws NoSuchFieldException {
+        ArrayList<Person> people = getPeople();
+        for (Person p : people) {
+            if (p.getIdPerson() == idPerson)
+                return p.getFirstName() + " " + p.getLastName();
+        }
+        throw new NoSuchFieldException("No person found for this id");
     }
 
     public ArrayList<AttendanceRecord> getAttendanceRecords(Integer idLecture) {

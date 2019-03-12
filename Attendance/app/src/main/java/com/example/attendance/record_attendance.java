@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +49,9 @@ public class record_attendance extends AppCompatActivity {
         setSupportActionBar(toolbar_record_attendance);
         getSupportActionBar().setTitle(title);
         db = new DBHelper(this);
+        checkoutRecords();
+        Log.d("RecordsContents", "Records content: " + records.toString());
         getContent();
-
 
 
     }
@@ -58,6 +60,26 @@ public class record_attendance extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.attendance_record, menu);
+        if (!records.isEmpty()) {
+            Log.d("RecordsContents", "Records: " + records.toString());
+            for (int j = 0; j < adapter.getCount(); j++) {
+                TextView textView = (TextView) listView.getChildAt(j);
+                String valueOfTextView = textView.getText().toString();
+                if (records.containsKey(valueOfTextView)) {
+                    String status = records.get(valueOfTextView);
+                    Log.d("Status", "status: " + status);
+                    if (status.equals("1")) {
+                        Log.d("loop", "entered the clause: ");
+                        textView.setBackgroundColor(Color.parseColor("#ee6055"));
+                    } else if (status.equals("2"))
+                        textView.setBackgroundColor(Color.parseColor("#ee6055"));
+                    else if (status.equals("3"))
+                        textView.setBackgroundColor(Color.parseColor("#ffd97d"));
+
+                }
+            }
+
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -81,10 +103,11 @@ public class record_attendance extends AppCompatActivity {
             case R.id.save_attendance:
                 try {
                     insertRecords(records);
-                    finish();
+
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
                 }
+                finish();
                 break;
             default:
                 //nothing
@@ -105,6 +128,25 @@ public class record_attendance extends AppCompatActivity {
     }
 
 
+    public void checkoutRecords() {
+        ArrayList<AttendanceRecord> recordArrayList = db.getAttendanceRecords(Integer.valueOf(lectureId));
+        ArrayList<Person> peopleInGroup = db.getPeople();
+        if (!recordArrayList.isEmpty()) {
+            for (AttendanceRecord aR : recordArrayList) {
+                Integer personID = aR.getIdPerson();
+                Log.d("checkoutRecords", "checkoutRecords: personId " + personID);
+                for (Person p : peopleInGroup) {
+                    if (p.getIdPerson() == personID) {
+                        String personFullName = p.getFirstName() + " " + p.getLastName();
+                        Log.d("checkoutRecords", "checkoutRecords: personId " + personFullName);
+                        records.put(personFullName, aR.getStatus());
+                    }
+                }
+            }
+        }
+    }
+
+
     protected void getContent() {
 
         groupMembers = new ArrayList<String>();
@@ -119,25 +161,26 @@ public class record_attendance extends AppCompatActivity {
         listView = findViewById(R.id.list_view_prise_presence);
         listView.setAdapter(adapter);
 
-
         if (!records.isEmpty()) {
-            Iterator it = records.entrySet().iterator();
-            while (it.hasNext()) {
-                HashMap.Entry pair = (HashMap.Entry) it.next();
-                int position = adapter.getPosition(pair.getKey().toString());
-                if (pair.getValue().toString().equals("1")) {
-                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
-                } else if (pair.getValue().toString().equals("2")) {
-                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#ee6055"));
-                } else if (pair.getValue().toString().equals("3")) {
-                    listView.getChildAt(position).setBackgroundColor(Color.parseColor("#aaf683"));
-                }
+            Log.d("RecordsContents", "Records: " + records.toString());
+            for (int j = 0; j < adapter.getCount(); j++) {
+                listView.setBackgroundColor(10);
+                /*String valueOfTextView = textView.getText().toString();
+                if(records.containsKey(valueOfTextView)){
+                    String status = records.get(valueOfTextView);
+                    Log.d("Status", "status: "+status);
+                    if(status.equals("1")){
+                        Log.d("loop", "entered the clause: ");
+                        textView.setBackgroundColor(Color.parseColor("#ee6055"));
+                    }
+                    else if(status.equals("2")) textView.setBackgroundColor(Color.parseColor("#ee6055"));
+                    else if(status.equals("3")) textView.setBackgroundColor(Color.parseColor("#ffd97d"));
+
+                }*/
             }
 
 
         }
-
-
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
