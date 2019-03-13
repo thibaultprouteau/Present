@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = DBHelper.getInstance(this.getApplicationContext());
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         db.insertGroups("L3", 2);
         db.insertGroups("M1", 3);
         db.insertGroups("M2", 4);
-        db.insertGroups("UNCATEGORIZED", -1);
+        db.insertGroups(getString(R.string.no_group), -1);
         db.insertCourse("DBD", "Database Design");
         db.insertCourse("AAN", "Machine Learning");
         db.insertGroups("TEACHER", -2);
@@ -84,5 +85,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onClick_statistiques(View view) {
         Intent statistiques = new Intent(getApplicationContext(), statistiques.class);
         startActivity(statistiques);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

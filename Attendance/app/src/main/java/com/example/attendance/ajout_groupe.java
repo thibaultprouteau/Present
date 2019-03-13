@@ -1,5 +1,7 @@
 package com.example.attendance;
 
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,8 @@ public class ajout_groupe extends AppCompatActivity {
     private String CHECKED = "checked";
     private ListView listView;
     private TextView groupName;
+    private ArrayAdapter<String> peopleAdapter;
+    private String groupNameValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,11 @@ public class ajout_groupe extends AppCompatActivity {
         Toolbar toolbar_ajout_etudiant = findViewById(R.id.tool_bar_ajout_groupe);
         setSupportActionBar(toolbar_ajout_etudiant);
         getSupportActionBar().setTitle(R.string.new_group);
+        groupNameValue = getIntent().getStringExtra("groupName");
+        Log.d("groupnamevalue", "onCreate: group name value" + groupNameValue);
         groupName = findViewById(R.id.group_name);
         getContent();
+
 
     }
 
@@ -51,9 +58,20 @@ public class ajout_groupe extends AppCompatActivity {
         ArrayList<String> people = new ArrayList<>();
 
         for (Person p : db.getPeople()) {
-            people.add(p.getFirstName() + " " + p.getLastName());
+            if (groupNameValue != null) {
+                groupName.setText(groupNameValue);
+                if (!p.getIdGroup().toString().equals(db.getGroupId(groupNameValue)))
+                    people.add(p.getFirstName() + " " + p.getLastName());
+
+                System.out.print("  ");
+
+            } else {
+                people.add(p.getFirstName() + " " + p.getLastName());
+            }
+
+
         }
-        ArrayAdapter<String> peopleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, people);
+        peopleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, people);
         listView = findViewById(R.id.list_view_students);
         listView.setAdapter(peopleAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -74,27 +92,24 @@ public class ajout_groupe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!groupName.getText().toString().isEmpty()) {
-            if (db.getGroupId(groupName.getText().toString()) == null) {
-                SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-                ArrayList<Person> peopleToBeAdded = new ArrayList<>();
-                for (int i = 0; i < checkedItems.size(); i++) {
-                    if (checkedItems.valueAt(i) == true) {
-                        String[] person = (listView.getItemAtPosition(i)).toString().split(" ");
-                        peopleToBeAdded.add(new Person(-1, person[0], person[1], -1));
-                    }
+            SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
+            ArrayList<Person> peopleToBeAdded = new ArrayList<>();
+            for (int i = 0; i < checkedItems.size(); i++) {
+                if (checkedItems.valueAt(i) == true) {
+                    String[] person = (listView.getItemAtPosition(i)).toString().split(" ");
+                    peopleToBeAdded.add(new Person(-1, person[0], person[1], -1));
                 }
-                db.insertGroups(groupName.getText().toString());
-                for (Person p : peopleToBeAdded) {
-                    db.insertPerson(p.getFirstName(), p.getLastName(), db.getGroupId(groupName.getText().toString()));
-                    Log.d(CHECKED, "Inserted in table: " + db.PERSON_TABLE_NAME + " " + p.getFirstName() + " " + p.getLastName() + " with groupId: " + db.getGroupId(groupName.getText().toString()));
-                }
-                this.finish();
-            } else {
-                Toast.makeText(this, R.string.invalidGroupName, Toast.LENGTH_SHORT).show();
             }
+            db.insertGroups(groupName.getText().toString());
+            for (Person p : peopleToBeAdded) {
+                db.insertPerson(p.getFirstName(), p.getLastName(), db.getGroupId(groupName.getText().toString()));
+                Log.d(CHECKED, "Inserted in table: " + db.PERSON_TABLE_NAME + " " + p.getFirstName() + " " + p.getLastName() + " with groupId: " + db.getGroupId(groupName.getText().toString()));
+            }
+            this.finish();
         } else {
-            Toast.makeText(this, R.string.emptyGroupName, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.invalidGroupName, Toast.LENGTH_SHORT).show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

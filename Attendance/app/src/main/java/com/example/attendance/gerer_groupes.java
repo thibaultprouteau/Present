@@ -103,7 +103,8 @@ public class gerer_groupes extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
         itemPressed = (String) groupslistView.getItemAtPosition(acmi.position);
-        menu.setHeaderTitle(getString(R.string.action_to_perform));
+        if (!itemPressed.equals(getString(R.string.no_group)))
+            menu.setHeaderTitle(getString(R.string.action_to_perform));
         menu.add(0, v.getId(), 0, getString(R.string.edit));
         menu.add(0, v.getId(), 0, getString(R.string.delete));
 
@@ -112,10 +113,15 @@ public class gerer_groupes extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle() == getString(R.string.edit)) {
-            //TODO edit
-
+            if (!itemPressed.equals(getString(R.string.no_group))) {
+                Intent intent = new Intent(getApplicationContext(), ajout_groupe.class);
+                intent.putExtra("groupName", itemPressed);
+                startActivity(intent);
+            }
         } else {
-            db.deleteGroup(itemPressed);
+            if (!itemPressed.equals(getString(R.string.no_group))) {
+                db.deleteGroup(itemPressed);
+            }
         }
         return super.onContextItemSelected(item);
     }

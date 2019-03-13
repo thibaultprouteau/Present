@@ -29,6 +29,15 @@ public class ajout_cours extends AppCompatActivity {
         courseName = findViewById(R.id.editText_nomModule);
         description = findViewById(R.id.editText_description);
 
+        if (getIntent().getStringExtra("courseName") != null && Integer.valueOf(getIntent().getStringExtra("courseId")) != null) {
+            courseName.setText(getIntent().getStringExtra("courseName"));
+            for (Course c : db.getCourses()) {
+                if (c.getCourseId() == Integer.valueOf(getIntent().getStringExtra("courseId")) && c.getCourseDesc() != null) {
+                    description.setText(c.getCourseDesc());
+                }
+            }
+        }
+
     }
 
     @Override
@@ -41,15 +50,14 @@ public class ajout_cours extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!courseName.getText().toString().isEmpty()) {
-            if (db.getCourseId(courseName.getText().toString()).isEmpty()) {
+            /*if (db.getCourseId(courseName.getText().toString()).isEmpty()) {*/
                 db.insertCourse(courseName.getText().toString(), description.getText().toString());
                 Log.d(DBDEBUG, "Inserted values  CourseName: " + courseName.getText().toString() + " Lecturer: " + description.getText().toString());
                 this.finish();
-            } else {
-                Toast.makeText(this, getString(R.string.invalidCourseName), Toast.LENGTH_SHORT).show();
-            }
-
         }
+        Toast.makeText(this, getString(R.string.invalidCourseName), Toast.LENGTH_SHORT).show();
+
+        //}
         return super.onOptionsItemSelected(item);
     }
 }

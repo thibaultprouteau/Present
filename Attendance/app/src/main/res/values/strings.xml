@@ -28,4 +28,5 @@
     <string name="new_group">New Group</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="no_group">NO GROUP</string>
 </resources>

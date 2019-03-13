@@ -151,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COURSE_COLUMN_NAME, courseName);
         contentValues.put(COURSE_COLUMN_DESCRIPTION, description);
-        db.insert(COURSE_TABLE_NAME, null, contentValues);
+        db.replace(COURSE_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -164,7 +164,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LECTURE_COLUMN_LOCATION, location);
         contentValues.put(LECTURE_COLUMN_COURSEID, idCourse);
         contentValues.put(LECTURE_COLUMN_GROUPID, idGroup);
-        db.insert(LECTURE_TABLE_NAME, null, contentValues);
+        db.replace(LECTURE_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -178,7 +178,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LECTURE_COLUMN_LOCATION, location);
         contentValues.put(LECTURE_COLUMN_COURSEID, idCourse);
         contentValues.put(LECTURE_COLUMN_GROUPID, idGroup);
-        db.insert(LECTURE_TABLE_NAME, null, contentValues);
+        db.replace(LECTURE_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -187,14 +187,14 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(GROUPS_COLUMN_NAME, groupName);
         contentValues.put(GROUPS_COLUMN_ID, idGroup);
-        db.insert(GROUPS_TABLE_NAME, null, contentValues);
+        db.replace(GROUPS_TABLE_NAME, null, contentValues);
         return true;
     }
     public boolean insertGroups(String groupName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GROUPS_COLUMN_NAME, groupName);
-        db.insert(GROUPS_TABLE_NAME, null, contentValues);
+        db.replace(GROUPS_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -204,7 +204,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(PERSON_COLUMN_FIRST_NAME, firstName);
         contentValues.put(PERSON_COLUMN_LAST_NAME, lastName);
         contentValues.put(PERSON_COLUMN_GROUPID, idGroup);
-        db.insert(PERSON_TABLE_NAME, null, contentValues);
+        db.replace(PERSON_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -259,7 +259,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean deleteLecture(String lectureId) {
-        //TODO delete lecture + attendance records
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + LECTURE_TABLE_NAME + " WHERE " + LECTURE_COLUMN_ID + " =?", new String[]{lectureId});
+        db.execSQL("DELETE FROM " + ATTENDANCE_TABLE_NAME + " WHERE " + ATTENDANCE_COLUMN_LECTUREID + " =?", new String[]{lectureId});
         return true;
     }
 
@@ -315,9 +317,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    public ArrayList<Course> getCourses() {
+        ArrayList<Course> courses = new ArrayList<>();
+        Cursor coursesCursor = getAll(COURSE_TABLE_NAME);
+        if (coursesCursor.moveToFirst()) {
+            do {
+                courses.add(new Course(
+                        coursesCursor.getInt(coursesCursor.getColumnIndex(COURSE_COLUMN_ID)),
+                        coursesCursor.getString(coursesCursor.getColumnIndex(COURSE_COLUMN_NAME)),
+                        coursesCursor.getString(coursesCursor.getColumnIndex(COURSE_COLUMN_DESCRIPTION))));
+            } while (coursesCursor.moveToNext());
+        }
+        return courses;
+    }
+
+
 
     public String getCourseId(String courseName) {
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor course = this.getAll(COURSE_TABLE_NAME);
         HashMap<String, String> coursesWithIds = new HashMap<>();
         if (course.moveToFirst()) {
@@ -330,7 +346,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Lecture> getLectures(Integer idCourse) {
         ArrayList<Lecture> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor lectures = getLecturesCursor(idCourse);
         if (lectures.moveToFirst()) {
             do {
@@ -349,7 +364,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Lecture> getLectures() {
         ArrayList<Lecture> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor lectures = getAll(LECTURE_TABLE_NAME);
         if (lectures.moveToFirst()) {
             do {
@@ -377,7 +391,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Groups> getGroups() {
         ArrayList<Groups> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor groups = getAll(GROUPS_TABLE_NAME);
         if (groups.moveToFirst()) {
             do {
@@ -398,7 +411,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public String getGroupName(String groupId) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor groups = db.rawQuery("SELECT groupName from Groups WHERE idGroup =?", new String[]{groupId});
         if (groups.moveToFirst()) {

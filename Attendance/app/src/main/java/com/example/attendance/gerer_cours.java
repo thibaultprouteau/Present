@@ -1,6 +1,7 @@
 package com.example.attendance;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -116,7 +117,11 @@ public class gerer_cours extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle() == getString(R.string.edit)) {
-            //TODO edit
+            Intent intent = new Intent(getApplicationContext(), ajout_cours.class);
+            intent.putExtra("courseName", itemPressed);
+            intent.putExtra("courseId", db.getCourseId(itemPressed));
+            startActivity(intent);
+
 
         } else {
             db.deleteCourse(itemPressed);

@@ -108,8 +108,12 @@ public class visualize_group_members extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle() == getString(R.string.edit)) {
-            //TODO edit
-
+            Intent intent = new Intent(getApplicationContext(), ajout_etudiant.class);
+            intent.putExtra("studentFirstName", itemPressed.split(" ")[0]);
+            intent.putExtra("studentLastName", itemPressed.split(" ")[1]);
+            intent.putExtra("group", groupName);
+            startActivity(intent);
+            Log.d("edit", "onContextItemSelected: pressed ");
         } else {
             String[] person = itemPressed.split(" ");
             db.deletePerson(person[0], person[1], groupId);

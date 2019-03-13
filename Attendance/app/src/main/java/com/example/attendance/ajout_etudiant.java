@@ -42,10 +42,24 @@ public class ajout_etudiant extends AppCompatActivity {
         firstName = findViewById(R.id.text_view_prenom_etudiant);
         lastName = findViewById(R.id.textView_nom_etudiant);
         Group = findViewById(R.id.spinner_groupe_etudiant);
-        defaultGroupValue = getIntent().getStringExtra("defaultGroup");
-        Log.d(DEFAULTVALUE, defaultGroupValue);
+
+
         addItemsOnSpinner();
-        Group.setSelection(dataAdapter.getPosition(defaultGroupValue));
+
+        defaultGroupValue = getIntent().getStringExtra("defaultGroup");
+        if (defaultGroupValue != null)
+            Group.setSelection(dataAdapter.getPosition(defaultGroupValue));
+
+        String personFirstName = getIntent().getStringExtra("studentFirstName");
+        String personLastName = getIntent().getStringExtra("studentLastName");
+        String groupName = getIntent().getStringExtra("group");
+        if (personFirstName != null && personLastName != null && groupName != null) {
+            firstName.setText(personFirstName);
+            lastName.setText(personLastName);
+            Group.setSelection(dataAdapter.getPosition(groupName));
+        }
+
+
     }
 
     @Override

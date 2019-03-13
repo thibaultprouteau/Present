@@ -80,7 +80,7 @@ public class record_attendance extends AppCompatActivity {
                     } else if (status.equals("2"))
                         textView.setBackgroundColor(Color.parseColor("#ee6055"));
                     else if (status.equals("3"))
-                        textView.setBackgroundColor(Color.parseColor("#ffd97d"));
+                        textView.setBackgroundColor(Color.parseColor("#F18805"));
 
                 }
             }
@@ -103,7 +103,7 @@ public class record_attendance extends AppCompatActivity {
                 for (int i = 0; i < adapter.getCount(); i++) {
                     listView.getChildAt(i).setBackgroundColor(Color.parseColor("#ee6055"));
                     String attendee = listView.getItemAtPosition(i).toString();
-                    records.put(attendee, "3");
+                    records.put(attendee, "2");
                 }
                 break;
             case R.id.save_attendance:
@@ -182,7 +182,7 @@ public class record_attendance extends AppCompatActivity {
                 } else if (records.get(parent.getItemAtPosition(position).toString()).equals("2")) {
                     records.put(parent.getItemAtPosition(position).toString(), "3");
                     Log.d(VISUALIZE, "onItemClick: value 3" + records.toString());
-                    parent.getChildAt(position).setBackgroundColor(Color.parseColor("#ffd97d"));
+                    parent.getChildAt(position).setBackgroundColor(Color.parseColor("#F18805"));
                 } else if (records.get(parent.getItemAtPosition(position).toString()).equals("3")) {
                     records.put(parent.getItemAtPosition(position).toString(), "1");
                     Log.d(VISUALIZE, "onItemClick: value 1" + records.toString());

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#009444</color>
+    <color name="colorPrimaryDark">#70C1B3</color>
+    <color name="colorAccent">#B2DBBF</color>
     <color name="absent">#ee6055</color>
     <color name="present">#aaf683</color>
     <color name="retard">#ffd97d</color>
+    <color name="splash_screen">#009444</color>
 </resources>
