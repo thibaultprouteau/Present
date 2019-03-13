@@ -31,8 +31,8 @@ public class seances_cours extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seances_cours);
+        db = DBHelper.getInstance(getApplicationContext());
 
-        db = new DBHelper(this);
         courseId = getIntent().getStringExtra("courseId");
         courseName = getIntent().getStringExtra("courseName");
 

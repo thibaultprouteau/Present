@@ -34,9 +34,8 @@ public class gerer_cours extends AppCompatActivity {
         Toolbar toolbar_gerer_cours = findViewById(R.id.toolbar_gerer_cours);
         setSupportActionBar(toolbar_gerer_cours);
         getSupportActionBar().setTitle(R.string.gerer_cours);
-
+        db = DBHelper.getInstance(getApplicationContext());
         Log.d(GERERCOURS, "onCreate: gererCours created ");
-        db = new DBHelper(this);
         getContent();
 
 

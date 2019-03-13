@@ -34,9 +34,9 @@ public class gerer_groupes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerer_groupes);
         Toolbar toolbar_gerer_groupes = findViewById(R.id.toolbar_gerer_groupes);
+        db = DBHelper.getInstance(getApplicationContext());
         setSupportActionBar(toolbar_gerer_groupes);
         getSupportActionBar().setTitle(R.string.gerer_groupes);
-        db = new DBHelper(this);
         getContent();
     }
 

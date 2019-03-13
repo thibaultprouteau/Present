@@ -34,7 +34,7 @@ public class visualize_group_members extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualize_group_members);
-        db = new DBHelper(this);
+        db = DBHelper.getInstance(getApplicationContext());
         groupName = getIntent().getStringExtra("groupName");
         groupId = getIntent().getStringExtra("idGroup");
         Log.d(VISUALIZE, "GroupId " + groupId);

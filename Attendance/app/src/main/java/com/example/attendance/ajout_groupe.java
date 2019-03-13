@@ -30,12 +30,11 @@ public class ajout_groupe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajout_groupe);
-
+        db = DBHelper.getInstance(getApplicationContext());
         Toolbar toolbar_ajout_etudiant = findViewById(R.id.tool_bar_ajout_groupe);
         setSupportActionBar(toolbar_ajout_etudiant);
         getSupportActionBar().setTitle(R.string.new_group);
         groupName = findViewById(R.id.group_name);
-        db = new DBHelper(this);
         getContent();
 
     }

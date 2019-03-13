@@ -15,6 +15,8 @@ import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static DBHelper sInstance;
+
     public static final String DATABASE_NAME = "Attendance.db";
     /************* Table Course  ***************/
 
@@ -75,7 +77,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASEDEBUG = "databasedebug";
 
 
-    public DBHelper(Context context) {
+    public static synchronized DBHelper getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new DBHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
 
     }
@@ -201,9 +214,10 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(ATTENDANCE_COLUMN_LECTUREID, idLecture);
         contentValues.put(ATTENDANCE_COLUMN_PERSONID, idPerson);
         contentValues.put(ATTENDANCE_COLUMN_STATUS, status);
-        db.insert(ATTENDANCE_TABLE_NAME, null, contentValues);
+        db.replace(ATTENDANCE_TABLE_NAME, null, contentValues);
         return true;
     }
+
 
     public boolean deletePerson(String firstName, String lastName, String idGroup) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -394,6 +408,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String getPersonColumnFirstNameLastName(Integer idPerson) {
         ArrayList<Person> people = new ArrayList<>();
+        people = getPeople();
         for (Person p : people) {
             if (p.getIdPerson().equals(idPerson.toString())) {
                 return p.getFirstName() + " " + p.getLastName();
@@ -404,7 +419,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Person> getPeople() {
         ArrayList<Person> arrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor people = getAll(PERSON_TABLE_NAME);
         if (people.moveToFirst()) {
             do {
@@ -433,13 +447,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public String getPersonColumnId(String firstName, String lastName, String groupId) throws NoSuchFieldException {
-        ArrayList<Person> peoples = getPeople(groupId);
-        for (Person p : peoples) {
-            if (p.getFirstName() == firstName && p.getLastName() == lastName)
+    public String getPersonColumnId(String firstName, String lastName, Integer idGroup) {
+        ArrayList<Person> people = new ArrayList<>();
+        people = getPeople();
+        for (Person p : people) {
+            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName) && p.getIdGroup().equals(idGroup)) {
                 return p.getIdPerson().toString();
+            }
         }
-        throw new NoSuchFieldException("No id found for this person");
+        return null;
     }
 
     public String getPersonColumnFirstName(Integer idPerson) throws NoSuchFieldException {

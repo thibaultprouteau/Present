@@ -21,8 +21,8 @@ public class ajout_cours extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = DBHelper.getInstance(getApplicationContext());
         setContentView(R.layout.activity_ajout_cours);
-        db = new DBHelper(this);
         Toolbar toolbar_ajout_cours = findViewById(R.id.tool_bar_ajout_cours);
         setSupportActionBar(toolbar_ajout_cours);
 

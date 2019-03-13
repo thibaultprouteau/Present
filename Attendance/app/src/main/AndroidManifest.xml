@@ -9,15 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".record_attendance"></activity>
-        <activity android:name=".add_lecture" />
-        <activity android:name=".ajout_groupe" />
-        <activity android:name=".visualize_group_members" />
         <activity
-            android:name=".seances_cours"
+            android:name=".record_attendance"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".add_lecture"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".prise_presence"
+            android:name=".ajout_groupe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".visualize_group_members"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".seances_cours"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ajout_etudiant"

@@ -36,7 +36,7 @@ public class ajout_etudiant extends AppCompatActivity {
         setContentView(R.layout.activity_ajout_etudiant);
         Toolbar toolbar_ajout_etudiant = findViewById(R.id.tool_bar_ajout_etudiant);
         setSupportActionBar(toolbar_ajout_etudiant);
-        db = new DBHelper(this);
+        db = DBHelper.getInstance(getApplicationContext());
 
         /************* Layout Elements ***********/
         firstName = findViewById(R.id.text_view_prenom_etudiant);

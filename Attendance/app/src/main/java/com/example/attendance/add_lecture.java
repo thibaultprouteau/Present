@@ -37,8 +37,8 @@ public class add_lecture extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = DBHelper.getInstance(this.getApplicationContext());
         setContentView(R.layout.activity_add_lecture);
-        db = new DBHelper(this);
         Toolbar toolbar_ajout_seance = findViewById(R.id.tool_bar_ajout_seance);
         setSupportActionBar(toolbar_ajout_seance);
         courseNameValue = getIntent().getStringExtra("courseName");

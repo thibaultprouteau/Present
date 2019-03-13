@@ -1,9 +1,12 @@
 package com.example.attendance;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +43,7 @@ public class record_attendance extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_attendance);
+        db = DBHelper.getInstance(getApplicationContext());
         lectureId = getIntent().getStringExtra("lectureId");
         Log.d(VISUALIZE, "lectureId" + lectureId);
         title = getIntent().getStringExtra("title");
@@ -48,8 +52,10 @@ public class record_attendance extends AppCompatActivity {
         Toolbar toolbar_record_attendance = findViewById(R.id.toolbar_record_attendance);
         setSupportActionBar(toolbar_record_attendance);
         getSupportActionBar().setTitle(title);
-        db = new DBHelper(this);
         checkoutRecords();
+        if ((savedInstanceState != null) && (savedInstanceState.getSerializable("Records") != null)) {
+            records = (HashMap<String, String>) savedInstanceState.getSerializable("Records");
+        }
         Log.d("RecordsContents", "Records content: " + records.toString());
         getContent();
 
@@ -70,7 +76,7 @@ public class record_attendance extends AppCompatActivity {
                     Log.d("Status", "status: " + status);
                     if (status.equals("1")) {
                         Log.d("loop", "entered the clause: ");
-                        textView.setBackgroundColor(Color.parseColor("#ee6055"));
+                        textView.setBackgroundColor(Color.parseColor("#aaf683"));
                     } else if (status.equals("2"))
                         textView.setBackgroundColor(Color.parseColor("#ee6055"));
                     else if (status.equals("3"))
@@ -101,12 +107,7 @@ public class record_attendance extends AppCompatActivity {
                 }
                 break;
             case R.id.save_attendance:
-                try {
-                    insertRecords(records);
-
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                }
+                insertRecords(records);
                 finish();
                 break;
             default:
@@ -116,12 +117,15 @@ public class record_attendance extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void insertRecords(HashMap<String, String> records) throws NoSuchFieldException {
+    public void insertRecords(HashMap<String, String> records) {
         Iterator it = records.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry) it.next();
             String[] attendee = pair.getKey().toString().split(" ");
-            String attendeeId = db.getPersonColumnId(attendee[0], attendee[1], groupId);
+            Log.d("attendee", "insertRecords: " + attendee[0] + " " + attendee[1]);
+            Log.d("attendee", "insertRecords: group Id" + groupId);
+            String attendeeId = db.getPersonColumnId(attendee[0], attendee[1], Integer.valueOf(groupId));
+            Log.d("Insert", "Found :" + attendee[0] + " " + attendee[1] + " has idPerson : " + attendeeId);
             db.insertAttendance(lectureId, attendeeId, pair.getValue().toString());
             Log.d(VISUALIZE, "insertRecords: " + lectureId + " " + attendeeId + "" + pair.getValue().toString());
         }
@@ -161,27 +165,6 @@ public class record_attendance extends AppCompatActivity {
         listView = findViewById(R.id.list_view_prise_presence);
         listView.setAdapter(adapter);
 
-        if (!records.isEmpty()) {
-            Log.d("RecordsContents", "Records: " + records.toString());
-            for (int j = 0; j < adapter.getCount(); j++) {
-                listView.setBackgroundColor(10);
-                /*String valueOfTextView = textView.getText().toString();
-                if(records.containsKey(valueOfTextView)){
-                    String status = records.get(valueOfTextView);
-                    Log.d("Status", "status: "+status);
-                    if(status.equals("1")){
-                        Log.d("loop", "entered the clause: ");
-                        textView.setBackgroundColor(Color.parseColor("#ee6055"));
-                    }
-                    else if(status.equals("2")) textView.setBackgroundColor(Color.parseColor("#ee6055"));
-                    else if(status.equals("3")) textView.setBackgroundColor(Color.parseColor("#ffd97d"));
-
-                }*/
-            }
-
-
-        }
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -208,6 +191,14 @@ public class record_attendance extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putSerializable("Records", records);
+
     }
 
 

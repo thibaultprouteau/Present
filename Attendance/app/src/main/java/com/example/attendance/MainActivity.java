@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new DBHelper(this);
+        db = DBHelper.getInstance(this.getApplicationContext());
         db.cleanDB();
         db.insertGroups("L2", 1);
         db.insertGroups("L3", 2);
