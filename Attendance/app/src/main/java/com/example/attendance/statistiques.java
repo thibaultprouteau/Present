@@ -23,24 +23,28 @@ public class statistiques extends AppCompatActivity {
         setContentView(R.layout.activity_statistiques);
         PieChartView pieChartView = findViewById(R.id.chart);
         List pieData = new ArrayList<>();
-        float statut1 = db.getAttendanceStats("1");
-        float statut2 = db.getAttendanceStats("2");
-        float statut3 = db.getAttendanceStats("3");
+        Float statut1 = db.getAttendanceStats("1");
+        Float statut2 = db.getAttendanceStats("2");
+        Float statut3 = db.getAttendanceStats("3");
+        if (statut1 != null && statut2 != null && statut3 != null) {
+            pieData.add(new SliceValue(statut1 * 500, getColor(R.color.present)).setLabel(getString(R.string.present)));
+            pieData.add(new SliceValue(statut2 * 500, getColor(R.color.absent)).setLabel(getString(R.string.absent)));
+            pieData.add(new SliceValue(statut3 * 500, getColor(R.color.retard)).setLabel(getString(R.string.late)));
+            PieChartData pieChartData = new PieChartData(pieData);
+            pieChartData.setHasLabels(true).setValueLabelTextSize(14);
+            pieChartData.setHasCenterCircle(true).setCenterText1(getString(R.string.app_name)).setCenterText1FontSize(20).setCenterText1Color(getColor(R.color.colorPrimary));
+            pieChartView.setPieChartData(pieChartData);
+        }
 
 
-        pieData.add(new SliceValue(statut1, Color.BLUE).setLabel(getString(R.string.present)));
-        pieData.add(new SliceValue(statut2, Color.GRAY).setLabel(getString(R.string.absent)));
-        pieData.add(new SliceValue(statut3, Color.RED).setLabel(getString(R.string.late)));
-        //pieData.add(new SliceValue(60, Color.MAGENTA).setLabel("Q4: $28"));
-        //float [] stats =db.getAttendanceStats();
 
-        //pieData.add(new SliceValue(stats[0],getColor(R.color.present)));
-        //pieData.add(new SliceValue(stats[1],getColor(R.color.absent)));
-        //pieData.add(new SliceValue(stats[2],getColor(R.color.retard)));
-        PieChartData pieChartData = new PieChartData(pieData);
-        pieChartData.setHasLabels(true).setValueLabelTextSize(14);
-        pieChartData.setHasCenterCircle(true).setCenterText1(getString(R.string.app_name)).setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#0097A7"));
-        pieChartView.setPieChartData(pieChartData);
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

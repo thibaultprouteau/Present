@@ -520,7 +520,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT " + ATTENDANCE_COLUMN_PERSONID + " FROM " + ATTENDANCE_TABLE_NAME +
                 " WHERE " + ATTENDANCE_COLUMN_STATUS + "=?", new String[]{status});
-        return Float.valueOf(c.getColumnCount());
+        return Float.valueOf(c.getCount());
 
     }
 

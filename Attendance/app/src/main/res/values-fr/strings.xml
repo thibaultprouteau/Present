@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Attendance</string>
+    <string name="gerer_groupes">Gérer Groupes</string>
+    <string name="statistiques">Statistiques</string>
+    <string name="gerer_cours">Gérer Cours</string>
+    <string name="add">Ajouter</string>
+    <string name="import_course">Importer</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="save">Sauvegarder</string>
+    <string name="course_name">Cours</string>
+    <string name="lecturer">Enseignant</string>
+    <string name="start_time">Début: </string>
+    <string name="end_time">Fin: </string>
+    <string name="lecturer2">Enseignant: </string>
+    <string name="location">Lieu: </string>
+    <string name="location_">Lieu</string>
+    <string name="description">Description</string>
+    <string name="invalidCourseName">Veuillez entrer un nom de cours valide.</string>
+    <string name="invalidGroupName">Veuillez entrer un nom de groupe valide.</string>
+    <string name="emptyGroupName">Veuillez entrer un nom de groupe.</string>
+    <string name="emptyField">Veuillez renseigner tous les champs.</string>
+    <string name="lectures">Séances</string>
+    <string name="action_to_perform">Action ?</string>
+    <string name="edit">Editer</string>
+    <string name="delete">Supprimer</string>
+    <string name="group_name">Nom de Groupe</string>
+    <string name="new_group">Nouveau Groupe</string>
+    <string name="date">Date</string>
+    <string name="time">Heure</string>
+    <string name="no_group">SANS GROUPE</string>
+    <string name="absent">Absent</string>
+    <string name="present">Présent</string>
+    <string name="late">En Retard</string>
+</resources>

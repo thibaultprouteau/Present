@@ -23,28 +23,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = DBHelper.getInstance(this.getApplicationContext());
-        db.cleanDB();
-        db.insertGroups("L2", 1);
-        db.insertGroups("L3", 2);
-        db.insertGroups("M1", 3);
-        db.insertGroups("M2", 4);
-        db.insertGroups(getString(R.string.no_group), -1);
-        db.insertCourse("DBD", "Database Design");
-        db.insertCourse("AAN", "Machine Learning");
-        db.insertGroups("TEACHER", -2);
-        db.insertPerson("Nathalie", "Camelin", "-2");
-        db.insertPerson("Nicolas", "Dugué", "-2");
-        db.insertPerson("Valérie", "Renault", "-2");
-        db.insertPerson("Valentin", "Pelloin", "1");
-        db.insertPerson("Marie", "Marthe", "1");
-        db.insertPerson("Maria", "Molina", "1");
-        db.insertAttendance("1", "4", "1");
-        db.insertAttendance("1", "5", "2");
-        db.insertAttendance("1", "6", "3");
-        db.insertPerson("Thibault", "Prouteau", "4");
-        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "1");
-        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "2");
-        db.insertLecture("3", "2019-03-22 08:00", "2019-03-22 10:00", "Laurent Bougares", "IC2-114", "2", "3");
+        loadSampleData();
+    }
+
+
+    protected void loadSampleData() {
+        //db.cleanDB();
+        //db.insertGroups("L2", 2);
+        //db.insertGroups("L3", 3);
+        //db.insertGroups("M1", 4);
+        //db.insertGroups("M2", 5);
+        //db.insertGroups("L1", 1);
+        //db.insertGroups(getString(R.string.no_group), -1);
+        //db.insertCourse("DBD", "Database Design");
+        //db.insertCourse("SLR", "Recherche");
+        //db.insertCourse("ProgInterf", "Android");
+        //db.insertCourse("ProgSym", "CLIPS");
+        //db.insertCourse("NLP", "Machine Learning");
+        //db.insertCourse("Projet", "MMA");
+        //db.insertGroups("TEACHER", -2);
+        //db.insertPerson("Nathalie", "Camelin", "-2");
+        //db.insertPerson("Nicolas", "Dugué", "-2");
+        //db.insertPerson("Valérie", "Renault", "-2");
+        //db.insertPerson("Thierry", "Lemeunier", "-2");
+        //db.insertPerson("Marie", "Tahon", "-2");
+        //db.insertPerson("Sylvain", "Meigner", "-2");
+        //db.insertPerson("Valentin", "Pelloin", "4");
+        //db.insertPerson("Benoit", "Combasteix", "4");
+        //db.insertPerson("Valentin", "Debonne", "4");
+        //db.insertPerson("Valentin", "Lion", "4");
+        //db.insertPerson("Florian", "Sebille", "4");
+        //db.insertPerson("Thibault", "Brocherieux", "4");
+        //db.insertPerson("Adam", "Lion", "3");
+        //db.insertPerson("Anthony", "Lardy", "3");
+        //db.insertPerson("Maelle", "Brassier", "5");
+        //db.insertPerson("Maria", "Molina", "5");
+        //db.insertPerson("Thibault", "Prouteau", "4");
+
+
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Nathalie Camelin", "IC2-114", "1", "4");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 10:00", "Fethi Bougares", "IC2-114", "2", "4");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 12:00", "Marie Tahon", "IC2-114", "4", "3");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 16:00", "Marie Tahon", "IC2-114", "4", "3");
+        db.insertLecture("2019-03-22 08:00", "2019-03-22 18:00", "Marie Tahon", "IC2-114", "4", "3");
     }
 
     protected void onClick_gerer_cours(View view) {

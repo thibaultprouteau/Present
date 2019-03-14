@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class add_lecture extends AppCompatActivity {
 
@@ -97,7 +98,13 @@ public class add_lecture extends AppCompatActivity {
                 !group.getSelectedItem().toString().isEmpty() &&
                 !lecturer.getSelectedItem().toString().isEmpty() &&
                 !location.getText().toString().isEmpty()) {
-            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            SimpleDateFormat dateformat = null;
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            } else if (Locale.getDefault().getLanguage().equals("en")) {
+                dateformat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            }
+
             Date startTime = null;
             Date endTime = null;
             try {
