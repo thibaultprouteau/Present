@@ -99,9 +99,9 @@ public class add_lecture extends AppCompatActivity {
                 !lecturer.getSelectedItem().toString().isEmpty() &&
                 !location.getText().toString().isEmpty()) {
             SimpleDateFormat dateformat = null;
-            if (Locale.getDefault().getLanguage().equals("fr")) {
+            if (Locale.getDefault().getLanguage().toLowerCase().equals("fr")) {
                 dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-            } else if (Locale.getDefault().getLanguage().equals("en")) {
+            } else if (Locale.getDefault().getLanguage().toLowerCase().equals("en")) {
                 dateformat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
             }
 
@@ -124,9 +124,9 @@ public class add_lecture extends AppCompatActivity {
                         db.getCourseId(courseName.getText().toString()), db.getGroupId(group.getSelectedItem().toString()));
                 Log.d(DBDEBUG, "Inserted values  in table lectures");
                 this.finish();
-            } else {
-                Toast.makeText(this, getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
-            }
+            } //else {
+            //Toast.makeText(this, getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
+            // }
         } else Toast.makeText(this, getString(R.string.emptyField), Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
 

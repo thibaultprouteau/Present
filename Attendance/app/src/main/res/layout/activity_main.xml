@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/splash_screen">
 
 
     <Button
@@ -22,7 +23,7 @@
         android:id="@+id/button_statistiques"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="243dp"
+        android:layout_marginBottom="100dp"
         android:onClick="onClick_statistiques"
         android:text="@string/statistiques"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,5 +40,19 @@
         app:layout_constraintBottom_toTopOf="@+id/button_gerer_groupes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="285dp"
+        android:layout_height="210dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="73dp"
+        android:contentDescription="Attendance Logo"
+        app:layout_constraintBottom_toTopOf="@+id/button_gerer_cours"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_splash_screen_logo" />
 
 </android.support.constraint.ConstraintLayout>
