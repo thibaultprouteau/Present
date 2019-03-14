@@ -29,4 +29,7 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="no_group">NO GROUP</string>
+    <string name="absent">Absent</string>
+    <string name="present">Present</string>
+    <string name="late">Late</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -512,6 +513,14 @@ public class DBHelper extends SQLiteOpenHelper {
             throw new NoSuchFieldException("No id found for this lecture");
         }
         return "error";
+
+    }
+
+    public float getAttendanceStats(String status) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT " + ATTENDANCE_COLUMN_PERSONID + " FROM " + ATTENDANCE_TABLE_NAME +
+                " WHERE " + ATTENDANCE_COLUMN_STATUS + "=?", new String[]{status});
+        return Float.valueOf(c.getColumnCount());
 
     }
 
